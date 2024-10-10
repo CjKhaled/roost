@@ -3,7 +3,7 @@ name: Lint-code
 on: push
 
 jobs:
-    test:
+    lint:
         runs-on: ubuntu-latest
         container: node:20
         steps:
