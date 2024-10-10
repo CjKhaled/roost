@@ -1,19 +1,20 @@
-name: Test API
+name: Test-API
 
-on:
-    pull_request:
-        branches:
-            - main
+on: push
 
 jobs:
     test:
         runs-on: ubuntu-latest
         container: node:20
         steps:
-            - uses: actions/checkout@v3
+            - name: Checkout code
+              uses: actions/checkout@v3
               with: 
                 node-version: 20
-            - run: npm ci
-            - run: npm test
-            - run: npm run build
+
+            - name: Install packages
+              run: npm ci
+
+            - name: Run tests
+              run: npm test
             
