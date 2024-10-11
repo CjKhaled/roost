@@ -1,9 +1,11 @@
 {
   "devDependencies": {
     "jest": "^29.7.0",
+    "prisma": "^5.20.0",
     "standard": "^17.1.2"
   },
   "dependencies": {
+    "@prisma/client": "^5.20.0",
     "dotenv": "^16.4.5",
     "express": "^4.21.1"
   },
@@ -11,5 +13,8 @@
     "test": "jest",
     "lint": "npx standard",
     "start": "node server/server.js"
+  },
+  "prisma": {
+    "schema": "server/models/prisma/schema.prisma"
   }
 }
