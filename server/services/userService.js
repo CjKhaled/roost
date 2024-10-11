@@ -13,7 +13,7 @@ async function addUser (FirstName, LastName, Email, Password) {
 
     return user
   } catch (error) {
-    throw new Error(error)
+    throw new Error(error.message)
   }
 }
 
@@ -25,9 +25,12 @@ async function getUser (Id) {
       }
     })
 
+    if (!user) {
+      throw new Error('User not found')
+    }
     return user
   } catch (error) {
-    throw new Error(error)
+    throw new Error(error.message)
   }
 }
 
@@ -45,7 +48,7 @@ async function updateUser (Id, FirstName, LastName) {
 
     return user
   } catch (error) {
-    throw new Error(error)
+    throw new Error(error.message)
   }
 }
 
@@ -59,7 +62,7 @@ async function deleteUser (Id) {
 
     return user
   } catch (error) {
-    throw new Error(error)
+    throw new Error(error.message)
   }
 }
 
@@ -68,7 +71,7 @@ async function getUsers () {
     const users = await prisma.user.findMany()
     return users
   } catch (error) {
-    throw new Error(error)
+    throw new Error(error.message)
   }
 }
 
