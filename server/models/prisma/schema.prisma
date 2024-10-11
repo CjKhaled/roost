@@ -14,5 +14,9 @@ datasource db {
 }
 
 model User {
-  id String @id @default(uuid())
+  Id        String @id @default(uuid())
+  FirstName String @db.VarChar(30)
+  LastName  String @db.VarChar(30)
+  Email     String @unique @db.VarChar(50)
+  Password  String
 }
