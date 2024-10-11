@@ -4,10 +4,12 @@
     "standard": "^17.1.2"
   },
   "dependencies": {
+    "dotenv": "^16.4.5",
     "express": "^4.21.1"
   },
   "scripts": {
     "test": "jest",
-    "lint": "npx standard"
+    "lint": "npx standard",
+    "start": "node server/server.js"
   }
 }
