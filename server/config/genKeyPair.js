@@ -28,4 +28,6 @@ function genKeyPair () {
   fs.writeFileSync(privateKeyPath, keyPair.privateKey)
 }
 
+genKeyPair()
+
 module.exports = genKeyPair
