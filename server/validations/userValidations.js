@@ -9,9 +9,9 @@ const emailError = 'Must provide a valid email.'
 const passwordLengthError = 'Password must be between 8-20 characters.'
 
 const validateUserCreate = [
-  body('FirstName').trim().isLength({ min: 1, max: 30 }).withMessage(firstNameLengthError).isAlpha().withMessage(firstNameError),
+  body('FirstName').trim().isLength({ min: 2, max: 30 }).withMessage(firstNameLengthError).isAlpha().withMessage(firstNameError),
 
-  body('LastName').trim().isLength({ min: 1, max: 30 }).withMessage(lastNameLengthError).isAlpha().withMessage(lastNameError),
+  body('LastName').trim().isLength({ min: 2, max: 30 }).withMessage(lastNameLengthError).isAlpha().withMessage(lastNameError),
 
   body('Email').trim().isLength({ min: 5, max: 50 }).withMessage(emailLengthError).isEmail().withMessage(emailError),
 
@@ -20,9 +20,9 @@ const validateUserCreate = [
 ]
 
 const validateUserUpdate = [
-  body('FirstName').trim().isLength({ min: 1, max: 30 }).withMessage(firstNameLengthError).isAlpha().withMessage(firstNameError),
+  body('FirstName').trim().isLength({ min: 2, max: 30 }).withMessage(firstNameLengthError).isAlpha().withMessage(firstNameError),
 
-  body('LastName').trim().isLength({ min: 1, max: 30 }).withMessage(lastNameLengthError).isAlpha().withMessage(lastNameError)
+  body('LastName').trim().isLength({ min: 2, max: 30 }).withMessage(lastNameLengthError).isAlpha().withMessage(lastNameError)
 ]
 
 module.exports = {
