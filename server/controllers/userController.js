@@ -1,6 +1,7 @@
 const { addUser, getUser, updateUser, deleteUser, getUsers } = require('../services/userService')
 const { validationResult } = require('express-validator')
 const AppError = require('../config/AppError')
+const hash = require('../config/hash')
 
 async function getSingleUser (req, res, next) {
   try {
@@ -28,7 +29,8 @@ async function createANewUser (req, res, next) {
       throw new AppError(errors.array()[0], 400)
     }
     const { FirstName, LastName, Email, Password } = req.body
-    const user = await addUser(FirstName, LastName, Email, Password)
+    const hashedPassword = await hash.hashPassword(Password)
+    const user = await addUser(FirstName, LastName, Email, hashedPassword)
     res.status(200).json({ user })
   } catch (error) {
     next(error)
