@@ -1,4 +1,6 @@
 const { addUser, getUser, updateUser, deleteUser, getUsers } = require('../services/userService')
+const { validationResult } = require('express-validator')
+const AppError = require('../config/AppError')
 
 async function getSingleUser (req, res, next) {
   try {
@@ -21,6 +23,10 @@ async function getAllUsers (req, res, next) {
 
 async function createANewUser (req, res, next) {
   try {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      throw new AppError(errors.array()[0], 400)
+    }
     const { FirstName, LastName, Email, Password } = req.body
     const user = await addUser(FirstName, LastName, Email, Password)
     res.status(200).json({ user })
@@ -31,6 +37,10 @@ async function createANewUser (req, res, next) {
 
 async function updateAnExistingUser (req, res, next) {
   try {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      throw new AppError(errors.array()[0], 400)
+    }
     const { userID } = req.params
     const { FirstName, LastName } = req.body
     const user = await updateUser(userID, FirstName, LastName)
