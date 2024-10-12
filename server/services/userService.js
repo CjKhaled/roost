@@ -1,4 +1,5 @@
 const prisma = require('../models/prisma/prismaClient')
+const AppError = require('../config/AppError')
 
 async function addUser (FirstName, LastName, Email, Password) {
   try {
@@ -13,7 +14,7 @@ async function addUser (FirstName, LastName, Email, Password) {
 
     return user
   } catch (error) {
-    throw new Error(error.message)
+    throw new AppError('A user with that email already exists.', 409)
   }
 }
 
@@ -26,11 +27,11 @@ async function getUser (Id) {
     })
 
     if (!user) {
-      throw new Error('User not found')
+      throw new AppError('User not found', 404)
     }
     return user
   } catch (error) {
-    throw new Error(error.message)
+    throw new AppError('User not found', 404)
   }
 }
 
@@ -48,7 +49,7 @@ async function updateUser (Id, FirstName, LastName) {
 
     return user
   } catch (error) {
-    throw new Error(error.message)
+    throw new AppError('User not found', 404)
   }
 }
 
@@ -62,7 +63,7 @@ async function deleteUser (Id) {
 
     return user
   } catch (error) {
-    throw new Error(error.message)
+    throw new AppError('User not found', 404)
   }
 }
 
@@ -71,7 +72,7 @@ async function getUsers () {
     const users = await prisma.user.findMany()
     return users
   } catch (error) {
-    throw new Error(error.message)
+    throw new AppError('Unexpected Error', 500)
   }
 }
 

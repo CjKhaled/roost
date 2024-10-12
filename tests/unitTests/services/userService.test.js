@@ -11,6 +11,15 @@ jest.mock('../../../server/models/prisma/prismaClient', () => ({
   }
 }))
 
+class PrismaClientKnownRequestError extends Error {
+  constructor (message, code, clientVersion) {
+    super(message)
+    this.name = 'PrismaClientKnownRequestError'
+    this.code = code
+    this.clientVersion = clientVersion
+  }
+}
+
 beforeEach(() => {
   jest.clearAllMocks()
 })
@@ -31,6 +40,13 @@ test('adding a new user works', async () => {
   expect(newUser).toEqual(mockUser)
 })
 
+test('adding a user with a duplicate email gives a 409 error', async () => {
+  const prismaError = new PrismaClientKnownRequestError('Unique constraint failed on the fields: (`Email`)', 'P2002', '1.0.0')
+  prisma.user.create.mockRejectedValue(prismaError)
+
+  await expect(addUser('John', 'Doe', 'existing.email@example.com', 'password123')).rejects.toThrow('A user with that email already exists.')
+})
+
 test('getting a user that exists works', async () => {
   const mockUser = { Id: 1, FirstName: 'Jane', LastName: 'Doe', Email: 'jane.doe@example.com', Password: 'password123' }
   prisma.user.findUnique.mockResolvedValue(mockUser)
@@ -44,7 +60,7 @@ test('getting a user that exists works', async () => {
   expect(fetchedUser).toEqual(mockUser)
 })
 
-test("getting a user that doesn't exist gives descriptive error", async () => {
+test("getting a user that doesn't exist gives 404 error", async () => {
   prisma.user.findUnique.mockResolvedValue(null)
 
   await expect(getUser(999)).rejects.toThrow('User not found')
@@ -67,8 +83,9 @@ test('updating a user that exists works', async () => {
   expect(updatedUser).toEqual(mockUpdatedUser)
 })
 
-test("updating a user that doesn't exist gives descriptive error", async () => {
-  prisma.user.update.mockRejectedValue(new Error('User not found'))
+test("updating a user that doesn't exist gives 404 error", async () => {
+  const prismaError = new PrismaClientKnownRequestError('User not found', 'P2025', '1.0.0') // Prisma's typical error
+  prisma.user.update.mockRejectedValue(prismaError)
 
   await expect(updateUser(999, 'Nonexistent', 'User')).rejects.toThrow('User not found')
 })
@@ -86,8 +103,9 @@ test('deleting a user that exists works', async () => {
   expect(deletedUser).toEqual(mockDeletedUser)
 })
 
-test("deleting a user that doesn't exist gives descriptive error", async () => {
-  prisma.user.delete.mockRejectedValue(new Error('User not found'))
+test("deleting a user that doesn't exist gives 404 error", async () => {
+  const prismaError = new PrismaClientKnownRequestError('User not found', 'P2025', '1.0.0')
+  prisma.user.delete.mockRejectedValue(prismaError)
 
   await expect(deleteUser(999)).rejects.toThrow('User not found')
 })
