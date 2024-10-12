@@ -36,11 +36,11 @@ function verifyJWT (token) {
     return decodedToken
   } catch (error) {
     if (error.name === 'TokenExpiredError') {
-      throw new AppError('Token has expired.', 401)
+      throw new AppError('Token has expired.', 403)
     } else if (error.name === 'JsonWebTokenError') {
-      throw new AppError('Invalid token.', 401)
+      throw new AppError('Invalid token.', 403)
     } else {
-      throw new AppError('Token verification failed.', 401)
+      throw new AppError('Token verification failed.', 403)
     }
   }
 }
