@@ -8,6 +8,7 @@
   "dependencies": {
     "@prisma/client": "^5.20.0",
     "bcryptjs": "^2.4.3",
+    "crypto": "^1.0.1",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "express-validator": "^7.2.0"
@@ -15,7 +16,7 @@
   "scripts": {
     "test": "jest",
     "lint": "npx standard",
-    "start": "node server/server.js"
+    "start": "node server/server.js && server/config/genKeyPair.js"
   },
   "prisma": {
     "schema": "server/models/prisma/schema.prisma"
