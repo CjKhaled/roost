@@ -31,6 +31,11 @@ async function signupUser (req, res, next) {
 
 async function loginUser (req, res, next) {
   try {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      throw new AppError(errors.array()[0], 400)
+    }
+
     const { Email, Password } = req.body
     const user = await getUser({ Email })
     if (!user) {

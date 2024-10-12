@@ -49,7 +49,7 @@ test('request to login an existing user has an Email that is over 50 characters'
   const result = await runValidation(reqBody, validateUserLogin)
 
   expect(result.isEmpty()).toBe(false)
-  expect(result.array()[0].msg).toBe('Email cannot be longer than 50 characters.')
+  expect(result.array()[0].msg).toBe('Email must be between 5-50 characters.')
 })
 
 test('request to login an existing user has a Password that is over 20 characters', async () => {

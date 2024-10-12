@@ -2,6 +2,7 @@
 const express = require('express')
 const app = express()
 const request = require('supertest')
+const passport = require('passport')
 const prisma = require('../../server/models/prisma/prismaClient')
 const errorHandler = require('../../server/middleware/errorHandler')
 const userRouter = require('../../server/routes/userRoutes')
@@ -19,6 +20,19 @@ jest.mock('../../server/models/prisma/prismaClient', () => ({
     findMany: jest.fn()
   }
 }))
+
+jest
+  .spyOn(passport, 'authenticate')
+  .mockImplementation((strategy, options, callback) => {
+    return (req, res, next) => {
+      // Simulate successful authentication
+      req.user = {
+        id: 'test-user-id',
+        email: 'test@example.com'
+      }
+      next()
+    }
+  })
 
 class PrismaClientKnownRequestError extends Error {
   constructor (message, code, clientVersion) {
