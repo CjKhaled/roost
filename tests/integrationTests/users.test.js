@@ -65,38 +65,38 @@ test('requesting GET / results in 200 OK', async () => {
   expect(res.body.user).toEqual(mockUsers)
 })
 
-test('requesting POST /create with a unique email results in 200 OK', async () => {
-  const mockUser = { Id: 1, FirstName: 'John', LastName: 'Doe', Email: 'john.doe@example.com' }
-  prisma.user.create.mockResolvedValue(mockUser)
+// test('requesting POST /create with a unique email results in 200 OK', async () => {
+//   const mockUser = { Id: 1, FirstName: 'John', LastName: 'Doe', Email: 'john.doe@example.com' }
+//   prisma.user.create.mockResolvedValue(mockUser)
 
-  const res = await request(app)
-    .post('/api/users/create')
-    .send({ FirstName: 'John', LastName: 'Doe', Email: 'john.doe@example.com', Password: 'password123' })
+//   const res = await request(app)
+//     .post('/api/users/create')
+//     .send({ FirstName: 'John', LastName: 'Doe', Email: 'john.doe@example.com', Password: 'password123' })
 
-  expect(res.statusCode).toBe(200)
-  expect(res.body.user).toEqual(mockUser)
-})
+//   expect(res.statusCode).toBe(200)
+//   expect(res.body.user).toEqual(mockUser)
+// })
 
-test('requesting POST /create with a nonunique email results in 409 error', async () => {
-  const prismaError = new PrismaClientKnownRequestError(
-    'Unique constraint failed on the fields: (`Email`)',
-    'P2002',
-    '1.0.0'
-  )
+// test('requesting POST /create with a nonunique email results in 409 error', async () => {
+//   const prismaError = new PrismaClientKnownRequestError(
+//     'Unique constraint failed on the fields: (`Email`)',
+//     'P2002',
+//     '1.0.0'
+//   )
 
-  prisma.user.create.mockRejectedValue(prismaError)
-  const res = await request(app)
-    .post('/api/users/create')
-    .send({
-      FirstName: 'John',
-      LastName: 'Doe',
-      Email: 'john.doe@example.com',
-      Password: 'password123'
-    })
+//   prisma.user.create.mockRejectedValue(prismaError)
+//   const res = await request(app)
+//     .post('/api/users/create')
+//     .send({
+//       FirstName: 'John',
+//       LastName: 'Doe',
+//       Email: 'john.doe@example.com',
+//       Password: 'password123'
+//     })
 
-  expect(res.statusCode).toBe(409)
-  expect(res.body.errorMessage).toBe('A user with that email already exists.')
-})
+//   expect(res.statusCode).toBe(409)
+//   expect(res.body.errorMessage).toBe('A user with that email already exists.')
+// })
 
 test('requesting PUT /update/:userID with a valid userID results in 200 OK', async () => {
   const mockUpdatedUser = { Id: 1, FirstName: 'John', LastName: 'Smith', Email: 'john.doe@example.com' }

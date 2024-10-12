@@ -5,7 +5,6 @@ const validator = require('../validations/userValidations')
 
 router.get('/:userID', controller.getSingleUser)
 router.get('/', controller.getAllUsers)
-router.post('/create', validator.validateUserCreate, controller.createANewUser)
 router.put('/update/:userID', validator.validateUserUpdate, controller.updateAnExistingUser)
 router.delete('/:userID', controller.deleteAnExistingUser)
 
