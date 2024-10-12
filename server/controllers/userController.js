@@ -1,12 +1,12 @@
 const { addUser, getUser, updateUser, deleteUser, getUsers } = require('../services/userService')
 const { validationResult } = require('express-validator')
 const AppError = require('../config/AppError')
-const hash = require('../config/hash')
+const hash = require('../config/hashUtils')
 
 async function getSingleUser (req, res, next) {
   try {
     const { userID } = req.params
-    const user = await getUser(userID)
+    const user = await getUser({ Id: userID })
     res.status(200).json({ user })
   } catch (error) {
     next(error)
