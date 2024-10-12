@@ -20,3 +20,13 @@ model User {
   Email     String @unique @db.VarChar(50)
   Password  String
 }
+
+model Listing {
+  id        Int      @id @default(autoincrement())
+  name      String
+  bedCount  Int
+  bathCount Int
+  address   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
