@@ -1,49 +1,86 @@
-const { PrismaClient } = require('@prisma/client')
-const prisma = new PrismaClient()
+const prisma = require('../models/prisma/prismaClient')
+const AppError = require('../config/AppError')
 
-// Add a new listing
-const addListing = async (name, bedCount, bathCount, address) => {
-  return await prisma.listing.create({
-    data: {
-      name,
-      bedCount,
-      bathCount,
-      address
+async function addListing(name, bedCount, bathCount, address) {
+  try {
+    const listing = await prisma.listing.create({
+      data: {
+        name,
+        bedCount,
+        bathCount,
+        address
+      }
+    })
+    return listing
+  } catch (error) {
+    throw new AppError('A listing with that name already exists.', 409) // Handle unique constraint error (P2002)
+  }
+}
+
+async function getListing(id) {
+  try {
+    const listing = await prisma.listing.findUnique({
+      where: {
+        id
+      }
+    })
+
+    if (!listing) {
+      throw new AppError('Listing not found', 404)
     }
-  })
+    return listing
+  } catch (error) {
+    throw new AppError('Listing not found', 404)
+  }
 }
 
-// Get a specific listing by ID
-const getListing = async (id) => {
-  return await prisma.listing.findUnique({
-    where: { id: Number(id) }
-  })
+async function updateListing(id, name, bedCount, bathCount, address) {
+  try {
+    const listing = await prisma.listing.update({
+      where: {
+        id
+      },
+      data: {
+        name,
+        bedCount,
+        bathCount,
+        address
+      }
+    })
+
+    return listing
+  } catch (error) {
+    throw new AppError('Listing not found', 404)
+  }
 }
 
-// Get all listings
-const getListings = async () => {
-  return await prisma.listing.findMany()
+async function deleteListing(id) {
+  try {
+    const listing = await prisma.listing.delete({
+      where: {
+        id
+      }
+    })
+
+    return listing
+  } catch (error) {
+    throw new AppError('Listing not found', 404)
+  }
 }
 
-// Update a listing by ID
-const updateListing = async (id, name, bedCount, bathCount, address) => {
-  return await prisma.listing.update({
-    where: { id: Number(id) },
-    data: { name, bedCount, bathCount, address }
-  })
-}
-
-// Delete a listing by ID
-const deleteListing = async (id) => {
-  return await prisma.listing.delete({
-    where: { id: Number(id) }
-  })
+async function getListings() {
+  try {
+    const listings = await prisma.listing.findMany()
+    return listings
+  } catch (error) {
+    throw new AppError('Unexpected Error', 500)
+  }
 }
 
 module.exports = {
   addListing,
   getListing,
-  getListings,
   updateListing,
-  deleteListing
+  deleteListing,
+  getListings
 }
