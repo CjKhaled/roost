@@ -1,4 +1,4 @@
-const { addListing, getListing, updateListing, deleteListing, getAllListings } = require('../services/listingService')
+const { addListing, getListing, updateListing, deleteListing, getListings } = require('../services/listingService')
 const { validationResult } = require('express-validator')
 const AppError = require('../config/AppError')
 
@@ -6,6 +6,9 @@ async function getSingleListing (req, res, next) {
   try {
     const { listingID } = req.params
     const listing = await getListing(listingID)
+    if (!listing) {
+      return res.status(404).json({ message: 'Listing not found' });
+    }
     res.status(200).json({ listing })
   } catch (error) {
     next(error)
@@ -14,18 +17,18 @@ async function getSingleListing (req, res, next) {
 
 async function getAllListingsController (req, res, next) {
   try {
-    const listings = await getAllListings()
+    const listings = await getListings()
     res.status(200).json({ listings })
   } catch (error) {
     next(error)
   }
 }
 
-async function createANewListing (req, res, next) {
+async function createANewListing(req, res, next) {
   try {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
-      throw new AppError(errors.array()[0], 400)
+      return res.status(400).json({ errors: errors.array() })
     }
 
     const { name, bedCount, bathCount, address } = req.body
@@ -36,11 +39,11 @@ async function createANewListing (req, res, next) {
   }
 }
 
-async function updateAnExistingListing (req, res, next) {
+async function updateAnExistingListing(req, res, next) {
   try {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
-      throw new AppError(errors.array()[0], 400)
+      return res.status(400).json({ errors: errors.array() })
     }
 
     const { listingID } = req.params
@@ -54,9 +57,12 @@ async function updateAnExistingListing (req, res, next) {
 
 async function deleteAnExistingListing (req, res, next) {
   try {
-    const { listingID } = req.params
-    await deleteListing(listingID)
-    res.status(200).json({ message: 'Listing deleted successfully' })
+    const { listingID } = req.params;
+    const listing = await deleteListing(listingID)
+    if (!listing) {
+      return res.status(404).json({ message: 'Listing not found' })
+    }
+    res.status(200).json({ listing })
   } catch (error) {
     next(error)
   }

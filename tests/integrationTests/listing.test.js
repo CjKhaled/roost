@@ -89,10 +89,10 @@ test('requesting POST /create with invalid data results in 400 Bad Request', asy
       // Missing required fields like name and address
       bedCount: 2,
       bathCount: 1
-    })
+    });
 
-  expect(res.statusCode).toBe(400)
-  expect(res.body.errors[0].msg).toBe('Title is required')
+  expect(res.statusCode).toBe(400);
+  expect(res.body.errors[0].msg).toBe('Name must be between 5-100 characters.'); // Match your validation message
 })
 
 test('requesting PUT /update/:listingID with a valid listingID results in 200 OK', async () => {
