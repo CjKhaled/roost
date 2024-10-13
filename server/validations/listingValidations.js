@@ -1,10 +1,10 @@
-const { body } = require('express-validator');
+const { body } = require('express-validator')
 
 // Error messages
-const nameLengthError = 'Name must be between 5-100 characters.';
-const bedCountError = 'Bed count must be a positive integer.';
-const bathCountError = 'Bath count must be a positive integer.';
-const addressLengthError = 'Address must be between 5-200 characters.';
+const nameLengthError = 'Name must be between 5-100 characters.'
+const bedCountError = 'Bed count must be a positive integer.'
+const bathCountError = 'Bath count must be a positive integer.'
+const addressLengthError = 'Address must be between 5-200 characters.'
 
 // Validation for creating a listing
 const validateListingCreate = [
@@ -25,7 +25,7 @@ const validateListingCreate = [
     .trim()
     .isLength({ min: 5, max: 200 })
     .withMessage(addressLengthError)
-];
+]
 
 // Validation for updating a listing
 const validateListingUpdate = [
@@ -50,9 +50,9 @@ const validateListingUpdate = [
     .trim()
     .isLength({ min: 5, max: 200 })
     .withMessage(addressLengthError)
-];
+]
 
 module.exports = {
   validateListingCreate,
   validateListingUpdate
-};
+}
