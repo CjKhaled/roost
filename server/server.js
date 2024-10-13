@@ -11,8 +11,10 @@ app.use(express.urlencoded({ extended: true }))
 require('./config/passportConfig')(passport)
 
 const userRouter = require('./routes/userRoutes')
+const authRouter = require('./routes/authRoutes')
 
 app.use('/api/users', userRouter)
+app.use('/api', authRouter)
 app.use(errorHandler)
 
 const port = process.env.PORT || 3000

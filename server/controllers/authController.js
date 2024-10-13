@@ -33,13 +33,19 @@ async function loginUser (req, res, next) {
   try {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
-      throw new AppError(errors.array()[0], 400)
+      throw new AppError(errors.array()[0].msg, 400)
     }
 
     const { Email, Password } = req.body
-    const user = await getUser({ Email })
-    if (!user) {
-      throw new AppError('Invalid email.', 401)
+
+    let user
+    try {
+      user = await getUser({ Email })
+    } catch (error) {
+      if (error instanceof AppError && error.statusCode === 404) {
+        throw new AppError('Invalid email.', 401)
+      }
+      throw error
     }
 
     const result = await hash.compareHashes(Password, user.Password)
