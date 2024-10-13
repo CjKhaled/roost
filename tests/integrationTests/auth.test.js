@@ -5,6 +5,7 @@ const request = require('supertest')
 const prisma = require('../../server/models/prisma/prismaClient')
 const errorHandler = require('../../server/middleware/errorHandler')
 const cookieParser = require('cookie-parser')
+const genKeyPair = require('../../server/config/genKeyPair')
 const authRouter = require('../../server/routes/authRoutes')
 
 app.use(cookieParser())
@@ -30,6 +31,10 @@ class PrismaClientKnownRequestError extends Error {
     this.clientVersion = clientVersion
   }
 }
+
+beforeAll(() => {
+  genKeyPair()
+})
 
 beforeEach(() => {
   jest.clearAllMocks()
