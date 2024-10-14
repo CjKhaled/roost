@@ -1,7 +1,7 @@
 const prisma = require('../models/prisma/prismaClient')
 const AppError = require('../config/AppError')
 
-async function addListing(name, bedCount, bathCount, address) {
+async function addListing (name, bedCount, bathCount, address) {
   try {
     const listing = await prisma.listing.create({
       data: {
@@ -17,7 +17,7 @@ async function addListing(name, bedCount, bathCount, address) {
   }
 }
 
-async function getListing(id) {
+async function getListing (id) {
   try {
     const listing = await prisma.listing.findUnique({
       where: {
@@ -34,7 +34,7 @@ async function getListing(id) {
   }
 }
 
-async function updateListing(id, name, bedCount, bathCount, address) {
+async function updateListing (id, name, bedCount, bathCount, address) {
   try {
     const listing = await prisma.listing.update({
       where: {
@@ -54,7 +54,7 @@ async function updateListing(id, name, bedCount, bathCount, address) {
   }
 }
 
-async function deleteListing(id) {
+async function deleteListing (id) {
   try {
     const listing = await prisma.listing.delete({
       where: {
@@ -68,7 +68,7 @@ async function deleteListing(id) {
   }
 }
 
-async function getListings() {
+async function getListings () {
   try {
     const listings = await prisma.listing.findMany()
     return listings

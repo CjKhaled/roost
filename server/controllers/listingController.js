@@ -7,7 +7,7 @@ async function getSingleListing (req, res, next) {
     const { listingID } = req.params
     const listing = await getListing(listingID)
     if (!listing) {
-      return res.status(404).json({ message: 'Listing not found' });
+      return res.status(404).json({ message: 'Listing not found' })
     }
     res.status(200).json({ listing })
   } catch (error) {
@@ -24,13 +24,12 @@ async function getAllListingsController (req, res, next) {
   }
 }
 
-async function createANewListing(req, res, next) {
+async function createANewListing (req, res, next) {
   try {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() })
+      throw new AppError(errors.array()[0], 400)
     }
-
     const { name, bedCount, bathCount, address } = req.body
     const listing = await addListing(name, bedCount, bathCount, address)
     res.status(201).json({ listing })
@@ -39,13 +38,12 @@ async function createANewListing(req, res, next) {
   }
 }
 
-async function updateAnExistingListing(req, res, next) {
+async function updateAnExistingListing (req, res, next) {
   try {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() })
+      throw new AppError(errors.array()[0], 400)
     }
-
     const { listingID } = req.params
     const { name, bedCount, bathCount, address } = req.body
     const listing = await updateListing(listingID, name, bedCount, bathCount, address)
@@ -57,7 +55,7 @@ async function updateAnExistingListing(req, res, next) {
 
 async function deleteAnExistingListing (req, res, next) {
   try {
-    const { listingID } = req.params;
+    const { listingID } = req.params
     const listing = await deleteListing(listingID)
     if (!listing) {
       return res.status(404).json({ message: 'Listing not found' })
