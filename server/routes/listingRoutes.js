@@ -8,4 +8,5 @@ router.get('/', controller.getAllListingsController)
 router.post('/create', validator.validateListingCreate, controller.createANewListing)
 router.put('/update/:listingID', validator.validateListingUpdate, controller.updateAnExistingListing)
 router.delete('/:listingID', controller.deleteAnExistingListing)
+
 module.exports = router
