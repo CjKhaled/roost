@@ -86,12 +86,13 @@ test('requesting POST /create with invalid data results in 400 Bad Request', asy
   const res = await request(app)
     .post('/api/listings/create')
     .send({
-      bedCount: 2,
-      bathCount: 1
+      name: 'Apt',
+      bedCount: 1,
+      bathCount: 1,
+      address: '123 Main St'
     })
-
   expect(res.statusCode).toBe(400)
-  expect(res.body.message).toContain('Name must be between 5-100 characters')
+  expect(res.body.errorMessage).toContain('Name must be between 5-100 characters')
 })
 
 test('requesting PUT /update/:listingID with a valid listingID results in 200 OK', async () => {
