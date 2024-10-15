@@ -6,7 +6,6 @@ const bedCountError = 'Bed count must be a positive integer.'
 const bathCountError = 'Bath count must be a positive integer.'
 const addressLengthError = 'Address must be between 5-200 characters.'
 
-// Validation for creating a listing
 const validateListingCreate = [
   body('name')
     .trim()
@@ -27,7 +26,6 @@ const validateListingCreate = [
     .withMessage(addressLengthError)
 ]
 
-// Validation for updating a listing
 const validateListingUpdate = [
   body('name')
     .optional()

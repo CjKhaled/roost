@@ -28,7 +28,7 @@ async function createANewListing (req, res, next) {
   try {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
-      throw new AppError(errors.array()[0], 400)
+      throw new AppError(errors.array()[0].msg, 400)
     }
     const { name, bedCount, bathCount, address } = req.body
     const listing = await addListing(name, bedCount, bathCount, address)
