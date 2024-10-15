@@ -51,7 +51,7 @@ test('getting a user that exists works', async () => {
   const mockUser = { Id: 1, FirstName: 'Jane', LastName: 'Doe', Email: 'jane.doe@example.com', Password: 'password123' }
   prisma.user.findUnique.mockResolvedValue(mockUser)
 
-  const fetchedUser = await getUser(1)
+  const fetchedUser = await getUser({ Id: 1 })
   expect(prisma.user.findUnique).toHaveBeenCalledWith({
     where: {
       Id: 1
@@ -63,7 +63,7 @@ test('getting a user that exists works', async () => {
 test("getting a user that doesn't exist gives 404 error", async () => {
   prisma.user.findUnique.mockResolvedValue(null)
 
-  await expect(getUser(999)).rejects.toThrow('User not found')
+  await expect(getUser({ Id: 999 })).rejects.toThrow('User not found')
 })
 
 test('updating a user that exists works', async () => {

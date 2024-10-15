@@ -2,11 +2,11 @@ const express = require('express')
 const router = express.Router()
 const controller = require('../controllers/userController')
 const validator = require('../validations/userValidations')
+const authenticateJWT = require('../middleware/authenticateJWT')
 
-router.get('/:userID', controller.getSingleUser)
-router.get('/', controller.getAllUsers)
-router.post('/create', validator.validateUserCreate, controller.createANewUser)
-router.put('/update/:userID', validator.validateUserUpdate, controller.updateAnExistingUser)
-router.delete('/:userID', controller.deleteAnExistingUser)
+router.get('/:userID', authenticateJWT, controller.getSingleUser)
+router.get('/', authenticateJWT, controller.getAllUsers)
+router.put('/update/:userID', validator.validateUserUpdate, authenticateJWT, controller.updateAnExistingUser)
+router.delete('/:userID', authenticateJWT, controller.deleteAnExistingUser)
 
 module.exports = router

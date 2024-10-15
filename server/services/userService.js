@@ -18,12 +18,10 @@ async function addUser (FirstName, LastName, Email, Password) {
   }
 }
 
-async function getUser (Id) {
+async function getUser ({ Id, Email }) {
   try {
     const user = await prisma.user.findUnique({
-      where: {
-        Id
-      }
+      where: Id ? { Id } : { Email }
     })
 
     if (!user) {
