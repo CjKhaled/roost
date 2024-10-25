@@ -18,6 +18,8 @@ jobs:
 
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.8
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -42,6 +44,7 @@ jobs:
             sleep 10
           done
           echo "Infrastructure is deployed!"
+        working-directory: ./deploy
 
       - name: SSH into EC2 and pull Docker image from ECR
         env:
