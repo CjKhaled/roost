@@ -111,11 +111,11 @@ test('requesting POST /create with invalid data results in 400 Bad Request', asy
   const res = await request(app)
     .post('/api/listings/create')
     .send({
-      name: 'Apt', 
+      name: 'Apt',
       bedCount: 1,
       bathCount: 1,
       address: '123 Main St',
-      createdById: 'test-user-id' 
+      createdById: 'test-user-id'
     })
 
   expect(res.statusCode).toBe(400)
