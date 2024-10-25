@@ -1,10 +1,10 @@
 FROM node:20-slim
 
-WORKDIR /app/server
+WORKDIR /app
 
-COPY ../*.json /app/
+COPY *.json .
 
-RUN cd /app && npm install
+RUN npm install
 
 COPY . .
 
