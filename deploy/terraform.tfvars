@@ -38,3 +38,6 @@ ip-protocol = "tcp"
 // state
 s3-bucket-name = "terraform-roost-state-unique"
 dynamodb-name = "terraform-roost-state-locking"
+
+// ecr
+ecr-repo-name = "roost-ecr-repo"

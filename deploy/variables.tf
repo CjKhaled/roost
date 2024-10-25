@@ -167,6 +167,12 @@ variable "dynamodb-name" {
   type = string
 }
 
+// ecr 
+variable "ecr-repo-name" {
+  description = "name of ecr repository"
+  type = string
+}
+
 
 
 
