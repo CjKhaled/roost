@@ -2,6 +2,7 @@
 const express = require('express')
 const app = express()
 const request = require('supertest')
+const passport = require('passport')
 const prisma = require('../../server/models/prisma/prismaClient')
 const errorHandler = require('../../server/middleware/errorHandler')
 const listingRouter = require('../../server/routes/listingRoutes')
@@ -20,6 +21,18 @@ jest.mock('../../server/models/prisma/prismaClient', () => ({
   }
 }))
 
+jest
+  .spyOn(passport, 'authenticate')
+  .mockImplementation((strategy, options, callback) => {
+    return (req, res, next) => {
+      req.user = {
+        id: 'test-user-id',
+        email: 'test@example.com'
+      }
+      next()
+    }
+  })
+
 class PrismaClientKnownRequestError extends Error {
   constructor (message, code, clientVersion) {
     super(message)
@@ -34,7 +47,7 @@ beforeEach(() => {
 })
 
 test('requesting GET /:listingID with a valid listingID results in 200 OK', async () => {
-  const mockListing = { id: 1, name: 'Luxury Apartment', bedCount: 2, bathCount: 1, address: '123 Main St' }
+  const mockListing = { Id: 1, name: 'Luxury Apartment', bedCount: 2, bathCount: 1, address: '123 Main St' }
   prisma.listing.findUnique.mockResolvedValue(mockListing)
 
   const res = await request(app).get('/api/listings/1')
@@ -54,8 +67,8 @@ test('requesting GET /:listingID with an invalid listingID results in 404 error'
 
 test('requesting GET / results in 200 OK', async () => {
   const mockListings = [
-    { id: 1, name: 'Luxury Apartment', bedCount: 2, bathCount: 1, address: '123 Main St' },
-    { id: 2, name: 'Cozy House', bedCount: 3, bathCount: 2, address: '456 Elm St' }
+    { Id: 1, name: 'Luxury Apartment', bedCount: 2, bathCount: 1, address: '123 Main St' },
+    { Id: 2, name: 'Cozy House', bedCount: 3, bathCount: 2, address: '456 Elm St' }
   ]
   prisma.listing.findMany.mockResolvedValue(mockListings)
 
@@ -66,7 +79,7 @@ test('requesting GET / results in 200 OK', async () => {
 })
 
 test('requesting POST /create with valid data results in 201 Created', async () => {
-  const mockListing = { id: 1, name: 'Luxury Apartment', bedCount: 2, bathCount: 1, address: '123 Main St' }
+  const mockListing = { Id: 1, name: 'Luxury Apartment', bedCount: 2, bathCount: 1, address: '123 Main St', createdById: 'test-user-id' }
   prisma.listing.create.mockResolvedValue(mockListing)
 
   const res = await request(app)
@@ -75,28 +88,42 @@ test('requesting POST /create with valid data results in 201 Created', async () 
       name: 'Luxury Apartment',
       bedCount: 2,
       bathCount: 1,
-      address: '123 Main St'
+      address: '123 Main St',
+      createdById: 'test-user-id'
     })
 
   expect(res.statusCode).toBe(201)
   expect(res.body.listing).toEqual(mockListing)
+  expect(prisma.listing.create).toHaveBeenCalledWith({
+    data: {
+      name: 'Luxury Apartment',
+      bedCount: 2,
+      bathCount: 1,
+      address: '123 Main St',
+      createdBy: {
+        connect: { Id: 'test-user-id' }
+      }
+    }
+  })
 })
 
 test('requesting POST /create with invalid data results in 400 Bad Request', async () => {
   const res = await request(app)
     .post('/api/listings/create')
     .send({
-      name: 'Apt',
+      name: 'Apt', 
       bedCount: 1,
       bathCount: 1,
-      address: '123 Main St'
+      address: '123 Main St',
+      createdById: 'test-user-id' 
     })
+
   expect(res.statusCode).toBe(400)
   expect(res.body.errorMessage).toContain('Name must be between 5-100 characters')
 })
 
 test('requesting PUT /update/:listingID with a valid listingID results in 200 OK', async () => {
-  const mockUpdatedListing = { id: 1, name: 'Updated Apartment', bedCount: 2, bathCount: 1, address: '123 Main St' }
+  const mockUpdatedListing = { Id: 1, name: 'Updated Apartment', bedCount: 2, bathCount: 1, address: '123 Main St' }
   prisma.listing.update.mockResolvedValue(mockUpdatedListing)
 
   const res = await request(app)
@@ -120,7 +147,7 @@ test('requesting PUT /update/:listingID with an invalid listingID results in 404
 })
 
 test('requesting DELETE /:listingID with a valid listingID results in 200 OK', async () => {
-  const mockDeletedListing = { id: 1, name: 'Luxury Apartment', bedCount: 2, bathCount: 1, address: '123 Main St' }
+  const mockDeletedListing = { Id: 1, name: 'Luxury Apartment', bedCount: 2, bathCount: 1, address: '123 Main St' }
   prisma.listing.delete.mockResolvedValue(mockDeletedListing)
 
   const res = await request(app).delete('/api/listings/1')

@@ -10,7 +10,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("DATABASE_URL_DEV")
 }
 
 model User {
@@ -19,14 +19,21 @@ model User {
   LastName  String @db.VarChar(30)
   Email     String @unique @db.VarChar(50)
   Password  String
+
+  // relationships
+  createdListings Listing[] @relation("UserCreatedListings") // a user can create many listings
 }
 
 model Listing {
-  id        Int      @id @default(autoincrement())
+  Id        Int      @id @default(autoincrement())
   name      String
   bedCount  Int
   bathCount Int
   address   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  // relationships
+  createdBy User @relation("UserCreatedListings", fields: [createdById], references: [Id])
+  createdById String
 }

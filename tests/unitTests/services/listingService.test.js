@@ -25,16 +25,19 @@ beforeEach(() => {
 })
 
 test('adding a new listing works', async () => {
-  const mockListing = { id: 1, name: 'Luxury Apartment', bedCount: 2, bathCount: 1, address: '123 Main St' }
+  const mockListing = { Id: 1, name: 'Luxury Apartment', bedCount: 2, bathCount: 1, address: '123 Main St', createdById: 'user-123' }
   prisma.listing.create.mockResolvedValue(mockListing)
 
-  const newListing = await addListing('Luxury Apartment', 2, 1, '123 Main St')
+  const newListing = await addListing('Luxury Apartment', 2, 1, '123 Main St', 'user-123')
   expect(prisma.listing.create).toHaveBeenCalledWith({
     data: {
       name: 'Luxury Apartment',
       bedCount: 2,
       bathCount: 1,
-      address: '123 Main St'
+      address: '123 Main St',
+      createdBy: {
+        connect: { Id: 'user-123' }
+      }
     }
   })
   expect(newListing).toEqual(mockListing)
@@ -48,13 +51,13 @@ test('adding a listing with a duplicate name gives a 409 error', async () => {
 })
 
 test('getting a listing that exists works', async () => {
-  const mockListing = { id: 1, name: 'Luxury Apartment', bedCount: 2, bathCount: 1, address: '123 Main St' }
+  const mockListing = { Id: 1, name: 'Luxury Apartment', bedCount: 2, bathCount: 1, address: '123 Main St' }
   prisma.listing.findUnique.mockResolvedValue(mockListing)
 
   const fetchedListing = await getListing(1)
   expect(prisma.listing.findUnique).toHaveBeenCalledWith({
     where: {
-      id: 1
+      Id: 1
     }
   })
   expect(fetchedListing).toEqual(mockListing)
@@ -67,13 +70,13 @@ test("getting a listing that doesn't exist gives 404 error", async () => {
 })
 
 test('updating a listing that exists works', async () => {
-  const mockUpdatedListing = { id: 1, name: 'Updated Apartment', bedCount: 2, bathCount: 1, address: '123 Main St' }
+  const mockUpdatedListing = { Id: 1, name: 'Updated Apartment', bedCount: 2, bathCount: 1, address: '123 Main St' }
   prisma.listing.update.mockResolvedValue(mockUpdatedListing)
 
   const updatedListing = await updateListing(1, 'Updated Apartment', 2, 1, '123 Main St')
   expect(prisma.listing.update).toHaveBeenCalledWith({
     where: {
-      id: 1
+      Id: 1
     },
     data: {
       name: 'Updated Apartment',
@@ -93,13 +96,13 @@ test("updating a listing that doesn't exist gives 404 error", async () => {
 })
 
 test('deleting a listing that exists works', async () => {
-  const mockDeletedListing = { id: 1, name: 'Luxury Apartment', bedCount: 2, bathCount: 1, address: '123 Main St' }
+  const mockDeletedListing = { Id: 1, name: 'Luxury Apartment', bedCount: 2, bathCount: 1, address: '123 Main St' }
   prisma.listing.delete.mockResolvedValue(mockDeletedListing)
 
   const deletedListing = await deleteListing(1)
   expect(prisma.listing.delete).toHaveBeenCalledWith({
     where: {
-      id: 1
+      Id: 1
     }
   })
   expect(deletedListing).toEqual(mockDeletedListing)
@@ -114,8 +117,8 @@ test("deleting a listing that doesn't exist gives 404 error", async () => {
 
 test('getting all listings works', async () => {
   const mockListings = [
-    { id: 1, name: 'Luxury Apartment', bedCount: 2, bathCount: 1, address: '123 Main St' },
-    { id: 2, name: 'Cozy Cottage', bedCount: 3, bathCount: 2, address: '456 Elm St' }
+    { Id: 1, name: 'Luxury Apartment', bedCount: 2, bathCount: 1, address: '123 Main St' },
+    { Id: 2, name: 'Cozy Cottage', bedCount: 3, bathCount: 2, address: '456 Elm St' }
   ]
   prisma.listing.findMany.mockResolvedValue(mockListings)
 

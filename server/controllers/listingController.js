@@ -31,7 +31,7 @@ async function createANewListing (req, res, next) {
       throw new AppError(errors.array()[0].msg, 400)
     }
     const { name, bedCount, bathCount, address } = req.body
-    const listing = await addListing(name, bedCount, bathCount, address)
+    const listing = await addListing(name, bedCount, bathCount, address, req.user.id)
     res.status(201).json({ listing })
   } catch (error) {
     next(error)
