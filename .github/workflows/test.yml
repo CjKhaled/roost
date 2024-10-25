@@ -1,6 +1,10 @@
-name: Test-API
+name: Test Code
 
-on: push
+on:
+  workflow_run:
+    workflows: ["Lint Code"]
+    types:
+      - completed
 
 jobs:
     test:
