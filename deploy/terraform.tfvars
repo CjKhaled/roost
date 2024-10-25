@@ -2,7 +2,7 @@
 ec2-ami = "ami-06b21ccaeff8cd686"
 ec2-instance-type = "t2.micro"
 ec2-instance-name = "roost-ec2-backend"
-ec2-key = "standard-key"
+ec2-key = "new-standard-key"
 
 // db vars
 db-subnet-group-name = "roost-rds-subnet-group"
