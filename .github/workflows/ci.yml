@@ -1,14 +1,12 @@
 name: CI Pipeline
 
-on:
-  push:
-    branches:
-      - main
-  
+on:  
   workflow_run:
     workflows: ["Lint Code", "Test Code"]
     types:
       - completed
+    branches: 
+      - main
 
 jobs:
   build:
