@@ -28,6 +28,7 @@ test('adding a new listing works', async () => {
   const mockListing = {
     id: 1,
     name: 'Luxury Apartment',
+    description: 'A luxury apartment',
     bedCount: 2,
     bathCount: 1,
     address: '123 Main St',
@@ -50,6 +51,7 @@ test('adding a new listing works', async () => {
 
   const newListing = await addListing(
     'Luxury Apartment',
+    'A luxury apartment',
     2,
     1,
     '123 Main St',
@@ -72,6 +74,7 @@ test('adding a new listing works', async () => {
   expect(prisma.listing.create).toHaveBeenCalledWith({
     data: {
       name: 'Luxury Apartment',
+      description: 'A luxury apartment',
       bedCount: 2,
       bathCount: 1,
       address: '123 Main St',

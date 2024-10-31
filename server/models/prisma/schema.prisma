@@ -58,6 +58,7 @@ model Listing {
   locationLng       Float
   availableFrom     String
   availableTo       String
+  description       String
   imageUrl          String[]
   amenities         Amenities[]
   utilities         Utilities[]

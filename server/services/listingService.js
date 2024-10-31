@@ -1,7 +1,7 @@
 const prisma = require('../models/prisma/prismaClient')
 const AppError = require('../config/AppError')
 
-async function addListing (name, bedCount, bathCount, address, createdById, location, price, available, imageUrl = [], amenities = [], utilities = [], policies = {}) {
+async function addListing (name, description, bedCount, bathCount, address, createdById, location, price, available, imageUrl = [], amenities = [], utilities = [], policies = {}) {
   try {
     const listing = await prisma.listing.create({
       data: {
@@ -9,6 +9,7 @@ async function addListing (name, bedCount, bathCount, address, createdById, loca
         bedCount,
         bathCount,
         address,
+        description,
         locationLat: location.lat,
         locationLng: location.lng,
         price,
@@ -56,6 +57,7 @@ async function updateListing (id, data) {
       where: { id },
       data: {
         name: data.name,
+        description: data.description,
         bedCount: data.bedCount,
         bathCount: data.bathCount,
         address: data.address,

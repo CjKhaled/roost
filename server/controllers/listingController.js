@@ -34,6 +34,7 @@ async function createANewListing (req, res, next) {
     }
     const {
       name,
+      description,
       bedCount,
       bathCount,
       address,
@@ -48,6 +49,7 @@ async function createANewListing (req, res, next) {
 
     const listing = await addListing(
       name,
+      description,
       bedCount,
       bathCount,
       address,
@@ -77,6 +79,7 @@ async function updateAnExistingListing (req, res, next) {
     const { listingID } = req.params
     const {
       name,
+      description,
       bedCount,
       bathCount,
       address,
@@ -91,6 +94,7 @@ async function updateAnExistingListing (req, res, next) {
 
     const listing = await updateListing(listingID, {
       name,
+      description,
       bedCount,
       bathCount,
       address,
