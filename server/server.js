@@ -12,9 +12,11 @@ require('./config/passportConfig')(passport)
 
 const userRouter = require('./routes/userRoutes')
 const authRouter = require('./routes/authRoutes')
+const listingRouter = require('./routes/listingRoutes')
 
-app.use('/api/users', userRouter)
 app.use('/api', authRouter)
+app.use('/api/users', userRouter)
+app.use('/api/listings', listingRouter)
 app.use(errorHandler)
 
 const port = process.env.PORT || 3000

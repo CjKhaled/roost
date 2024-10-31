@@ -41,12 +41,12 @@ beforeEach(() => {
 })
 
 test('requesting POST /signup with a unique email results in 200 OK', async () => {
-  const mockUser = { Id: 1, FirstName: 'John', LastName: 'Doe', Email: 'john.doe@example.com' }
+  const mockUser = { id: 1, firstName: 'John', lastName: 'Doe', email: 'john.doe@example.com' }
   prisma.user.create.mockResolvedValue(mockUser)
 
   const res = await request(app)
     .post('/api/signup')
-    .send({ FirstName: 'John', LastName: 'Doe', Email: 'john.doe@example.com', Password: 'password123' })
+    .send({ firstName: 'John', lastName: 'Doe', email: 'john.doe@example.com', password: 'password123' })
 
   expect(res.statusCode).toBe(200)
   expect(res.body.user).toEqual(mockUser)
@@ -54,7 +54,7 @@ test('requesting POST /signup with a unique email results in 200 OK', async () =
 
 test('requesting POST /signup with a nonunique email results in 409 error', async () => {
   const prismaError = new PrismaClientKnownRequestError(
-    'Unique constraint failed on the fields: (`Email`)',
+    'Unique constraint failed on the fields: (`email`)',
     'P2002',
     '1.0.0'
   )
@@ -63,10 +63,10 @@ test('requesting POST /signup with a nonunique email results in 409 error', asyn
   const res = await request(app)
     .post('/api/signup')
     .send({
-      FirstName: 'John',
-      LastName: 'Doe',
-      Email: 'john.doe@example.com',
-      Password: 'password123'
+      firstName: 'John',
+      lastName: 'Doe',
+      email: 'john.doe@example.com',
+      password: 'password123'
     })
 
   expect(res.statusCode).toBe(409)
@@ -74,7 +74,7 @@ test('requesting POST /signup with a nonunique email results in 409 error', asyn
 })
 
 test('requesting POST /login with correct credentials results in 200 OK', async () => {
-  const mockUser = { Id: 1, FirstName: 'John', LastName: 'Doe', Email: 'john.doe@example.com', Password: 'hashedPassword123' }
+  const mockUser = { id: 1, firstName: 'John', lastName: 'Doe', email: 'john.doe@example.com', password: 'hashedpassword123' }
 
   prisma.user.findUnique.mockResolvedValue(mockUser)
 
@@ -82,7 +82,7 @@ test('requesting POST /login with correct credentials results in 200 OK', async 
 
   const res = await request(app)
     .post('/api/login')
-    .send({ Email: 'john.doe@example.com', Password: 'password123' })
+    .send({ email: 'john.doe@example.com', password: 'password123' })
 
   expect(res.statusCode).toBe(200)
   expect(res.body.user).toEqual(mockUser)
@@ -93,14 +93,14 @@ test('requesting POST /login with incorrect email results in 401 error', async (
 
   const res = await request(app)
     .post('/api/login')
-    .send({ Email: 'nonexistent@example.com', Password: 'password123' })
+    .send({ email: 'nonexistent@example.com', password: 'password123' })
 
   expect(res.statusCode).toBe(401)
   expect(res.body.errorMessage).toBe('Invalid email.')
 })
 
 test('requesting POST /login with incorrect password results in 401 error', async () => {
-  const mockUser = { Id: 1, FirstName: 'John', LastName: 'Doe', Email: 'john.doe@example.com', Password: 'hashedPassword123' }
+  const mockUser = { id: 1, firstName: 'John', lastName: 'Doe', email: 'john.doe@example.com', password: 'hashedpassword123' }
 
   prisma.user.findUnique.mockResolvedValue(mockUser)
   const hashUtils = require('../../server/config/hashUtils')
@@ -108,7 +108,7 @@ test('requesting POST /login with incorrect password results in 401 error', asyn
 
   const res = await request(app)
     .post('/api/login')
-    .send({ Email: 'john.doe@example.com', Password: 'wrongpassword' })
+    .send({ email: 'john.doe@example.com', password: 'wrongpassword' })
 
   expect(res.statusCode).toBe(401)
   expect(res.body.errorMessage).toBe('Invalid password.')

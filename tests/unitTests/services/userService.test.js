@@ -25,36 +25,36 @@ beforeEach(() => {
 })
 
 test('adding a new user works', async () => {
-  const mockUser = { Id: 1, FirstName: 'John', LastName: 'Doe', Email: 'john.doe@example.com', Password: 'password123' }
+  const mockUser = { id: 1, firstName: 'John', lastName: 'Doe', email: 'john.doe@example.com', password: 'password123' }
   prisma.user.create.mockResolvedValue(mockUser)
 
   const newUser = await addUser('John', 'Doe', 'john.doe@example.com', 'password123')
   expect(prisma.user.create).toHaveBeenCalledWith({
     data: {
-      FirstName: 'John',
-      LastName: 'Doe',
-      Email: 'john.doe@example.com',
-      Password: 'password123'
+      firstName: 'John',
+      lastName: 'Doe',
+      email: 'john.doe@example.com',
+      password: 'password123'
     }
   })
   expect(newUser).toEqual(mockUser)
 })
 
 test('adding a user with a duplicate email gives a 409 error', async () => {
-  const prismaError = new PrismaClientKnownRequestError('Unique constraint failed on the fields: (`Email`)', 'P2002', '1.0.0')
+  const prismaError = new PrismaClientKnownRequestError('Unique constraint failed on the fields: (`email`)', 'P2002', '1.0.0')
   prisma.user.create.mockRejectedValue(prismaError)
 
   await expect(addUser('John', 'Doe', 'existing.email@example.com', 'password123')).rejects.toThrow('A user with that email already exists.')
 })
 
 test('getting a user that exists works', async () => {
-  const mockUser = { Id: 1, FirstName: 'Jane', LastName: 'Doe', Email: 'jane.doe@example.com', Password: 'password123' }
+  const mockUser = { id: 1, firstName: 'Jane', lastName: 'Doe', email: 'jane.doe@example.com', password: 'password123' }
   prisma.user.findUnique.mockResolvedValue(mockUser)
 
-  const fetchedUser = await getUser({ Id: 1 })
+  const fetchedUser = await getUser({ id: 1 })
   expect(prisma.user.findUnique).toHaveBeenCalledWith({
     where: {
-      Id: 1
+      id: 1
     }
   })
   expect(fetchedUser).toEqual(mockUser)
@@ -63,21 +63,21 @@ test('getting a user that exists works', async () => {
 test("getting a user that doesn't exist gives 404 error", async () => {
   prisma.user.findUnique.mockResolvedValue(null)
 
-  await expect(getUser({ Id: 999 })).rejects.toThrow('User not found')
+  await expect(getUser({ id: 999 })).rejects.toThrow('User not found')
 })
 
 test('updating a user that exists works', async () => {
-  const mockUpdatedUser = { Id: 1, FirstName: 'Jane', LastName: 'Doe', Email: 'jane.doe@example.com', Password: 'password123' }
+  const mockUpdatedUser = { id: 1, firstName: 'Jane', lastName: 'Doe', email: 'jane.doe@example.com', password: 'password123' }
   prisma.user.update.mockResolvedValue(mockUpdatedUser)
 
   const updatedUser = await updateUser(1, 'Jane', 'Doe')
   expect(prisma.user.update).toHaveBeenCalledWith({
     where: {
-      Id: 1
+      id: 1
     },
     data: {
-      FirstName: 'Jane',
-      LastName: 'Doe'
+      firstName: 'Jane',
+      lastName: 'Doe'
     }
   })
   expect(updatedUser).toEqual(mockUpdatedUser)
@@ -91,13 +91,13 @@ test("updating a user that doesn't exist gives 404 error", async () => {
 })
 
 test('deleting a user that exists works', async () => {
-  const mockDeletedUser = { Id: 1, FirstName: 'Jane', LastName: 'Doe', Email: 'jane.doe@example.com', Password: 'password123' }
+  const mockDeletedUser = { id: 1, firstName: 'Jane', lastName: 'Doe', email: 'jane.doe@example.com', password: 'password123' }
   prisma.user.delete.mockResolvedValue(mockDeletedUser)
 
   const deletedUser = await deleteUser(1)
   expect(prisma.user.delete).toHaveBeenCalledWith({
     where: {
-      Id: 1
+      id: 1
     }
   })
   expect(deletedUser).toEqual(mockDeletedUser)
@@ -112,8 +112,8 @@ test("deleting a user that doesn't exist gives 404 error", async () => {
 
 test('getting all users works', async () => {
   const mockUsers = [
-    { Id: 1, FirstName: 'John', LastName: 'Doe', Email: 'john.doe@example.com', Password: 'password123' },
-    { Id: 2, FirstName: 'Jane', LastName: 'Doe', Email: 'jane.doe@example.com', Password: 'password123' }
+    { id: 1, firstName: 'John', lastName: 'Doe', email: 'john.doe@example.com', password: 'password123' },
+    { id: 2, firstName: 'Jane', lastName: 'Doe', email: 'jane.doe@example.com', password: 'password123' }
   ]
   prisma.user.findMany.mockResolvedValue(mockUsers)
 

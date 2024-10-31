@@ -14,8 +14,8 @@ const runValidation = async (reqBody, validationMiddleware) => {
   return validationResult(req)
 }
 
-test('request to update a user has a FirstName that contains a number', async () => {
-  const reqBody = { FirstName: 'John123', LastName: 'Doe' }
+test('request to update a user has a firstName that contains a number', async () => {
+  const reqBody = { firstName: 'John123', lastName: 'Doe' }
 
   const result = await runValidation(reqBody, validateUserUpdate)
 
@@ -23,8 +23,8 @@ test('request to update a user has a FirstName that contains a number', async ()
   expect(result.array()[0].msg).toBe('First name must only contain letters.')
 })
 
-test('request to update a user has a LastName with only 1 character', async () => {
-  const reqBody = { FirstName: 'John', LastName: 'D' }
+test('request to update a user has a lastName with only 1 character', async () => {
+  const reqBody = { firstName: 'John', lastName: 'D' }
 
   const result = await runValidation(reqBody, validateUserUpdate)
 
@@ -33,7 +33,7 @@ test('request to update a user has a LastName with only 1 character', async () =
 })
 
 test('request to update a user meets all the constraints', async () => {
-  const reqBody = { FirstName: 'John', LastName: 'Doe' }
+  const reqBody = { firstName: 'John', lastName: 'Doe' }
 
   const result = await runValidation(reqBody, validateUserUpdate)
 

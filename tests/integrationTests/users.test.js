@@ -47,7 +47,7 @@ beforeEach(() => {
 })
 
 test('requesting GET /:userID with a valid userID results in 200 OK', async () => {
-  const mockUser = { Id: 1, FirstName: 'John', LastName: 'Doe', Email: 'john.doe@example.com' }
+  const mockUser = { id: 1, firstName: 'John', lastName: 'Doe', email: 'john.doe@example.com' }
   prisma.user.findUnique.mockResolvedValue(mockUser)
 
   const res = await request(app).get('/api/users/1')
@@ -67,8 +67,8 @@ test('requesting GET /:userID with an invalid userID results in 404 error', asyn
 
 test('requesting GET / results in 200 OK', async () => {
   const mockUsers = [
-    { Id: 1, FirstName: 'John', LastName: 'Doe', Email: 'john.doe@example.com' },
-    { Id: 2, FirstName: 'Jane', LastName: 'Doe', Email: 'jane.doe@example.com' }
+    { id: 1, firstName: 'John', lastName: 'Doe', email: 'john.doe@example.com' },
+    { id: 2, firstName: 'Jane', lastName: 'Doe', email: 'jane.doe@example.com' }
   ]
   prisma.user.findMany.mockResolvedValue(mockUsers)
 
@@ -79,12 +79,12 @@ test('requesting GET / results in 200 OK', async () => {
 })
 
 test('requesting PUT /update/:userID with a valid userID results in 200 OK', async () => {
-  const mockUpdatedUser = { Id: 1, FirstName: 'John', LastName: 'Smith', Email: 'john.doe@example.com' }
+  const mockUpdatedUser = { id: 1, firstName: 'John', lastName: 'Smith', email: 'john.doe@example.com' }
   prisma.user.update.mockResolvedValue(mockUpdatedUser)
 
   const res = await request(app)
     .put('/api/users/update/1')
-    .send({ FirstName: 'John', LastName: 'Smith' })
+    .send({ firstName: 'John', lastName: 'Smith' })
 
   expect(res.statusCode).toBe(200)
   expect(res.body.user).toEqual(mockUpdatedUser)
@@ -96,14 +96,14 @@ test('requesting PUT /update/:userID with an invalid userID results in 404 error
 
   const res = await request(app)
     .put('/api/users/update/999')
-    .send({ FirstName: 'John', LastName: 'Smith' })
+    .send({ firstName: 'John', lastName: 'Smith' })
 
   expect(res.statusCode).toBe(404)
   expect(res.body.errorMessage).toBe('User not found')
 })
 
 test('requesting DELETE /:userID with a valid userID results in 200 OK', async () => {
-  const mockDeletedUser = { Id: 1, FirstName: 'John', LastName: 'Doe', Email: 'john.doe@example.com' }
+  const mockDeletedUser = { id: 1, firstName: 'John', lastName: 'Doe', email: 'john.doe@example.com' }
   prisma.user.delete.mockResolvedValue(mockDeletedUser)
 
   const res = await request(app).delete('/api/users/1')

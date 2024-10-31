@@ -11,9 +11,9 @@ async function signupUser (req, res, next) {
       throw new AppError(errors.array()[0], 400)
     }
 
-    const { FirstName, LastName, Email, Password } = req.body
-    const hashedPassword = await hash.hashPassword(Password)
-    const user = await addUser(FirstName, LastName, Email, hashedPassword)
+    const { firstName, lastName, email, password } = req.body
+    const hashedPassword = await hash.hashPassword(password)
+    const user = await addUser(firstName, lastName, email, hashedPassword)
 
     const jwtToken = jwt.issueJWT(user)
     res.cookie('token', jwtToken.token, {
@@ -36,11 +36,11 @@ async function loginUser (req, res, next) {
       throw new AppError(errors.array()[0].msg, 400)
     }
 
-    const { Email, Password } = req.body
+    const { email, password } = req.body
 
     let user
     try {
-      user = await getUser({ Email })
+      user = await getUser({ email })
     } catch (error) {
       if (error instanceof AppError && error.statusCode === 404) {
         throw new AppError('Invalid email.', 401)
@@ -48,7 +48,7 @@ async function loginUser (req, res, next) {
       throw error
     }
 
-    const result = await hash.compareHashes(Password, user.Password)
+    const result = await hash.compareHashes(password, user.password)
     if (result) {
       const jwtToken = jwt.issueJWT(user)
       res.cookie('token', jwtToken.token, {

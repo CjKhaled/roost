@@ -1,14 +1,14 @@
 const prisma = require('../models/prisma/prismaClient')
 const AppError = require('../config/AppError')
 
-async function addUser (FirstName, LastName, Email, Password) {
+async function addUser (firstName, lastName, email, password) {
   try {
     const user = await prisma.user.create({
       data: {
-        FirstName,
-        LastName,
-        Email,
-        Password
+        firstName,
+        lastName,
+        email,
+        password
       }
     })
 
@@ -18,10 +18,10 @@ async function addUser (FirstName, LastName, Email, Password) {
   }
 }
 
-async function getUser ({ Id, Email }) {
+async function getUser ({ id, email }) {
   try {
     const user = await prisma.user.findUnique({
-      where: Id ? { Id } : { Email }
+      where: id ? { id } : { email }
     })
 
     if (!user) {
@@ -33,15 +33,15 @@ async function getUser ({ Id, Email }) {
   }
 }
 
-async function updateUser (Id, FirstName, LastName) {
+async function updateUser (id, firstName, lastName) {
   try {
     const user = await prisma.user.update({
       where: {
-        Id
+        id
       },
       data: {
-        FirstName,
-        LastName
+        firstName,
+        lastName
       }
     })
 
@@ -51,11 +51,11 @@ async function updateUser (Id, FirstName, LastName) {
   }
 }
 
-async function deleteUser (Id) {
+async function deleteUser (id) {
   try {
     const user = await prisma.user.delete({
       where: {
-        Id
+        id
       }
     })
 

@@ -9,20 +9,20 @@ const emailError = 'Must provide a valid email.'
 const passwordLengthError = 'Password must be between 8-20 characters.'
 
 const validateUserSignup = [
-  body('FirstName').trim().isLength({ min: 2, max: 30 }).withMessage(firstNameLengthError).isAlpha().withMessage(firstNameError),
+  body('firstName').trim().isLength({ min: 2, max: 30 }).withMessage(firstNameLengthError).isAlpha().withMessage(firstNameError),
 
-  body('LastName').trim().isLength({ min: 2, max: 30 }).withMessage(lastNameLengthError).isAlpha().withMessage(lastNameError),
+  body('lastName').trim().isLength({ min: 2, max: 30 }).withMessage(lastNameLengthError).isAlpha().withMessage(lastNameError),
 
-  body('Email').trim().isLength({ min: 5, max: 50 }).withMessage(emailLengthError).isEmail().withMessage(emailError),
+  body('email').trim().isLength({ min: 5, max: 50 }).withMessage(emailLengthError).isEmail().withMessage(emailError),
 
-  body('Password').trim().isLength({ min: 8, max: 20 }).withMessage(passwordLengthError)
+  body('password').trim().isLength({ min: 8, max: 20 }).withMessage(passwordLengthError)
 
 ]
 
 const validateUserLogin = [
-  body('Email').trim().isLength({ min: 5, max: 50 }).withMessage(emailLengthError).isEmail().withMessage(emailError),
+  body('email').trim().isLength({ min: 5, max: 50 }).withMessage(emailLengthError).isEmail().withMessage(emailError),
 
-  body('Password').trim().isLength({ min: 8, max: 20 }).withMessage(passwordLengthError)
+  body('password').trim().isLength({ min: 8, max: 20 }).withMessage(passwordLengthError)
 ]
 
 module.exports = {
