@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-const { addUser, getUser, updateUser, deleteUser, getUsers } = require('../../../server/services/userService')
+const { addUser, getUser, updateUser, deleteUser, getUsers, getUserByEmail } = require('../../../server/services/userService')
 const prisma = require('../../../server/models/prisma/prismaClient')
 jest.mock('../../../server/models/prisma/prismaClient', () => ({
   user: {
@@ -51,7 +51,7 @@ test('getting a user that exists works', async () => {
   const mockUser = { id: 1, firstName: 'Jane', lastName: 'Doe', email: 'jane.doe@example.com', password: 'password123' }
   prisma.user.findUnique.mockResolvedValue(mockUser)
 
-  const fetchedUser = await getUser({ id: 1 })
+  const fetchedUser = await getUser(1)
   expect(prisma.user.findUnique).toHaveBeenCalledWith({
     where: {
       id: 1
@@ -63,7 +63,7 @@ test('getting a user that exists works', async () => {
 test("getting a user that doesn't exist gives 404 error", async () => {
   prisma.user.findUnique.mockResolvedValue(null)
 
-  await expect(getUser({ id: 999 })).rejects.toThrow('User not found')
+  await expect(getUser(999)).rejects.toThrow('User not found')
 })
 
 test('updating a user that exists works', async () => {

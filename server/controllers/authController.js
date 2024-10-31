@@ -1,4 +1,4 @@
-const { addUser, getUser } = require('../services/userService')
+const { addUser, getUserByEmail } = require('../services/userService')
 const { validationResult } = require('express-validator')
 const AppError = require('../config/AppError')
 const hash = require('../config/hashUtils')
@@ -40,7 +40,7 @@ async function loginUser (req, res, next) {
 
     let user
     try {
-      user = await getUser({ email })
+      user = await getUserByEmail(email)
     } catch (error) {
       if (error instanceof AppError && error.statusCode === 404) {
         throw new AppError('Invalid email.', 401)

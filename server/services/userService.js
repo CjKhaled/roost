@@ -26,9 +26,31 @@ async function getUser (id) {
       }
     })
 
+    if (!user) {
+      throw new AppError('User not found', 404)
+    }
+
     return user
   } catch (error) {
-    throw new AppError(error.message, 404)
+    throw new AppError('User not found', 404)
+  }
+}
+
+async function getUserByEmail (email) {
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        email: email
+      }
+    })
+
+    if (!user) {
+      throw new AppError('User not found', 404)
+    }
+
+    return user
+  } catch (error) {
+    throw new AppError('User not found', 404)
   }
 }
 
@@ -78,5 +100,6 @@ module.exports = {
   getUser,
   updateUser,
   deleteUser,
-  getUsers
+  getUsers,
+  getUserByEmail
 }
