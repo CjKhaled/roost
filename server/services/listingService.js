@@ -29,7 +29,7 @@ async function addListing (name, bedCount, bathCount, address, createdById, loca
     })
     return listing
   } catch (error) {
-    throw new AppError(error, 409)
+    throw new AppError('A listing with that name already exists.', 409)
   }
 }
 
