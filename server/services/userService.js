@@ -22,7 +22,7 @@ async function getUser (id) {
   try {
     const user = await prisma.user.findUnique({
       where: {
-        id: id
+        id
       }
     })
 
@@ -40,7 +40,7 @@ async function getUserByEmail (email) {
   try {
     const user = await prisma.user.findUnique({
       where: {
-        email: email
+        email
       }
     })
 

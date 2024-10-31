@@ -10,8 +10,8 @@ const locationError = 'Location must include valid latitude and longitude.'
 const dateError = 'Please provide valid dates in the format YYYY-MM-DD.'
 const imageUrlError = 'Image URLs should be an array of valid URLs.'
 // const amenityOptions = [
-//   'WIFI', 'PARKING', 'LAUNDRY', 'DISHWASHER', 'GYM', 
-//   'POOL', 'STUDY_ROOM', 'TRASH_PICKUP', 'CABLE_TV', 
+//   'WIFI', 'PARKING', 'LAUNDRY', 'DISHWASHER', 'GYM',
+//   'POOL', 'STUDY_ROOM', 'TRASH_PICKUP', 'CABLE_TV',
 //   'ELECTRIC_VEHICLE_CHARGING'
 // ];
 // const utilityOptions = [
@@ -62,7 +62,7 @@ const validateListingCreate = [
 
   body('imageUrl')
     .isArray()
-    .withMessage(imageUrlError),
+    .withMessage(imageUrlError)
 
   // body('amenities')
   //   .optional()
@@ -106,7 +106,7 @@ const validateListingCreate = [
   //   .optional()
   //   .isBoolean()
   //   .withMessage(booleanError)
-  //   .notEmpty(),  
+  //   .notEmpty(),
 ]
 
 const validateListingUpdate = [
@@ -150,7 +150,7 @@ const validateListingUpdate = [
 
   body('imageUrl')
     .isArray()
-    .withMessage(imageUrlError),
+    .withMessage(imageUrlError)
 
   // body('amenities')
   //   .optional()
@@ -194,7 +194,7 @@ const validateListingUpdate = [
   //   .optional()
   //   .isBoolean()
   //   .withMessage(booleanError)
-  //   .notEmpty(),  
+  //   .notEmpty(),
 ]
 
 module.exports = {

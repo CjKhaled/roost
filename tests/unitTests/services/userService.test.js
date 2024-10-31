@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-const { addUser, getUser, updateUser, deleteUser, getUsers, getUserByEmail } = require('../../../server/services/userService')
+const { addUser, getUser, updateUser, deleteUser, getUsers } = require('../../../server/services/userService')
 const prisma = require('../../../server/models/prisma/prismaClient')
 jest.mock('../../../server/models/prisma/prismaClient', () => ({
   user: {
