@@ -45,8 +45,8 @@ test('adding a new listing works', async () => {
     guestsAllowed: true,
     petsAllowed: false,
     smokingAllowed: false
-  };
-  prisma.listing.create.mockResolvedValue(mockListing);
+  }
+  prisma.listing.create.mockResolvedValue(mockListing)
 
   const newListing = await addListing(
     'Luxury Apartment',
@@ -67,7 +67,7 @@ test('adding a new listing works', async () => {
       petsAllowed: false,
       smokingAllowed: false
     }
-  );
+  )
 
   expect(prisma.listing.create).toHaveBeenCalledWith({
     data: {
@@ -92,13 +92,13 @@ test('adding a new listing works', async () => {
         connect: { id: 'user-123' }
       }
     }
-  });
-  expect(newListing).toEqual(mockListing);
-});
+  })
+  expect(newListing).toEqual(mockListing)
+})
 
 test('adding a listing with a duplicate name gives a 409 error', async () => {
-  const prismaError = new PrismaClientKnownRequestError('Unique constraint failed on the fields: (`name`)', 'P2002', '1.0.0');
-  prisma.listing.create.mockRejectedValue(prismaError);
+  const prismaError = new PrismaClientKnownRequestError('Unique constraint failed on the fields: (`name`)', 'P2002', '1.0.0')
+  prisma.listing.create.mockRejectedValue(prismaError)
 
   await expect(
     addListing(
@@ -112,8 +112,8 @@ test('adding a listing with a duplicate name gives a 409 error', async () => {
       { from: '2023-01-01', to: '2023-12-31' },
       ['https://example.com/image.jpg']
     )
-  ).rejects.toThrow('A listing with that name already exists.');
-});
+  ).rejects.toThrow('A listing with that name already exists.')
+})
 
 test('getting a listing that exists works', async () => {
   const mockListing = {
@@ -122,23 +122,23 @@ test('getting a listing that exists works', async () => {
     bedCount: 2,
     bathCount: 1,
     address: '123 Main St'
-  };
-  prisma.listing.findUnique.mockResolvedValue(mockListing);
+  }
+  prisma.listing.findUnique.mockResolvedValue(mockListing)
 
-  const fetchedListing = await getListing(1);
+  const fetchedListing = await getListing(1)
   expect(prisma.listing.findUnique).toHaveBeenCalledWith({
     where: {
       id: 1
     }
-  });
-  expect(fetchedListing).toEqual(mockListing);
-});
+  })
+  expect(fetchedListing).toEqual(mockListing)
+})
 
 test("getting a listing that doesn't exist gives 404 error", async () => {
-  prisma.listing.findUnique.mockResolvedValue(null);
+  prisma.listing.findUnique.mockResolvedValue(null)
 
-  await expect(getListing(999)).rejects.toThrow('Listing not found');
-});
+  await expect(getListing(999)).rejects.toThrow('Listing not found')
+})
 
 test('updating a listing that exists works', async () => {
   const mockUpdatedListing = {
@@ -160,8 +160,8 @@ test('updating a listing that exists works', async () => {
     guestsAllowed: true,
     petsAllowed: true,
     smokingAllowed: false
-  };
-  prisma.listing.update.mockResolvedValue(mockUpdatedListing);
+  }
+  prisma.listing.update.mockResolvedValue(mockUpdatedListing)
 
   const updatedListing = await updateListing(1, {
     name: 'Updated Apartment',
@@ -181,7 +181,7 @@ test('updating a listing that exists works', async () => {
       petsAllowed: true,
       smokingAllowed: false
     }
-  });
+  })
 
   expect(prisma.listing.update).toHaveBeenCalledWith({
     where: {
@@ -206,9 +206,9 @@ test('updating a listing that exists works', async () => {
       petsAllowed: true,
       smokingAllowed: false
     }
-  });
-  expect(updatedListing).toEqual(mockUpdatedListing);
-});
+  })
+  expect(updatedListing).toEqual(mockUpdatedListing)
+})
 
 test("updating a listing that doesn't exist gives 404 error", async () => {
   const prismaError = new PrismaClientKnownRequestError('Listing not found', 'P2025', '1.0.0')

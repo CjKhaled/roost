@@ -99,8 +99,8 @@ test('requesting POST /create with valid data results in 200 Created', async () 
     guestsAllowed: true,
     petsAllowed: false,
     smokingAllowed: false
-  };
-  prisma.listing.create.mockResolvedValue(mockListing);
+  }
+  prisma.listing.create.mockResolvedValue(mockListing)
 
   const res = await request(app)
     .post('/api/listings/create')
@@ -122,10 +122,10 @@ test('requesting POST /create with valid data results in 200 Created', async () 
         petsAllowed: false,
         smokingAllowed: false
       }
-    });
+    })
 
-  expect(res.statusCode).toBe(200);
-  expect(res.body.listing).toEqual(mockListing);
+  expect(res.statusCode).toBe(200)
+  expect(res.body.listing).toEqual(mockListing)
   expect(prisma.listing.create).toHaveBeenCalledWith({
     data: {
       name: 'Luxury Apartment',
@@ -149,8 +149,8 @@ test('requesting POST /create with valid data results in 200 Created', async () 
         connect: { id: 'test-user-id' }
       }
     }
-  });
-});
+  })
+})
 
 test('requesting POST /create with invalid data results in 400 Bad Request', async () => {
   const res = await request(app)
@@ -161,8 +161,8 @@ test('requesting POST /create with invalid data results in 400 Bad Request', asy
       bathCount: 1,
       address: '123 Main St',
       location: { lat: 34.05, lng: -118.25 },
-      price: 100, 
-      available: { from: '2023-13-01', to: '2023-12-32' }, 
+      price: 100,
+      available: { from: '2023-13-01', to: '2023-12-32' },
       imageUrl: ['a-url'],
       amenities: ['WiFi'],
       utilities: ['Electricity'],
@@ -173,11 +173,11 @@ test('requesting POST /create with invalid data results in 400 Bad Request', asy
         petsAllowed: false,
         smokingAllowed: false
       }
-    });
+    })
 
-  expect(res.statusCode).toBe(400);
-  expect(res.body.errorMessage).toContain('Name must be between 5-100 characters');
-});
+  expect(res.statusCode).toBe(400)
+  expect(res.body.errorMessage).toContain('Name must be between 5-100 characters')
+})
 
 test('requesting PUT /update/:listingID with a valid listingID results in 200 OK', async () => {
   const mockUpdatedListing = {
@@ -199,8 +199,8 @@ test('requesting PUT /update/:listingID with a valid listingID results in 200 OK
     guestsAllowed: true,
     petsAllowed: true,
     smokingAllowed: false
-  };
-  prisma.listing.update.mockResolvedValue(mockUpdatedListing);
+  }
+  prisma.listing.update.mockResolvedValue(mockUpdatedListing)
 
   const res = await request(app)
     .put('/api/listings/update/1')
@@ -222,15 +222,15 @@ test('requesting PUT /update/:listingID with a valid listingID results in 200 OK
         petsAllowed: true,
         smokingAllowed: false
       }
-    });
+    })
 
-  expect(res.statusCode).toBe(200);
-  expect(res.body.listing).toEqual(mockUpdatedListing);
-});
+  expect(res.statusCode).toBe(200)
+  expect(res.body.listing).toEqual(mockUpdatedListing)
+})
 
 test('requesting PUT /update/:listingID with an invalid listingID results in 404 error', async () => {
-  const prismaError = new PrismaClientKnownRequestError('Listing not found', 'P2025', '1.0.0');
-  prisma.listing.update.mockRejectedValue(prismaError);
+  const prismaError = new PrismaClientKnownRequestError('Listing not found', 'P2025', '1.0.0')
+  prisma.listing.update.mockRejectedValue(prismaError)
 
   const res = await request(app)
     .put('/api/listings/update/999')
@@ -252,10 +252,10 @@ test('requesting PUT /update/:listingID with an invalid listingID results in 404
         petsAllowed: true,
         smokingAllowed: false
       }
-    });
+    })
 
-  expect(res.statusCode).toBe(404);
-  expect(res.body.errorMessage).toBe('Listing not found');
+  expect(res.statusCode).toBe(404)
+  expect(res.body.errorMessage).toBe('Listing not found')
 })
 
 test('requesting DELETE /:listingID with a valid listingID results in 200 OK', async () => {
@@ -269,7 +269,7 @@ test('requesting DELETE /:listingID with a valid listingID results in 200 OK', a
 })
 
 test('requesting DELETE /:listingID with an invalid listingID results in 404 error', async () => {
-  const prismaError = new PrismaClientKnownRequestError('Listing not found', 'P2025', '1.0.0') 
+  const prismaError = new PrismaClientKnownRequestError('Listing not found', 'P2025', '1.0.0')
   prisma.listing.delete.mockRejectedValue(prismaError)
 
   const res = await request(app).delete('/api/listings/999')

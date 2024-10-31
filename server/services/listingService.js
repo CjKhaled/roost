@@ -26,8 +26,8 @@ async function addListing (name, bedCount, bathCount, address, createdById, loca
           connect: { id: createdById }
         }
       }
-    });
-    return listing;
+    })
+    return listing
   } catch (error) {
     throw new AppError('A listing with that name already exists.', 409)
   }
@@ -71,11 +71,11 @@ async function updateListing (id, data) {
         strictNoisePolicy: data.policies?.strictNoisePolicy,
         guestsAllowed: data.policies?.guestsAllowed,
         petsAllowed: data.policies?.petsAllowed,
-        smokingAllowed: data.policies?.smokingAllowed,
+        smokingAllowed: data.policies?.smokingAllowed
       }
-    });
+    })
 
-    return listing;
+    return listing
   } catch (error) {
     throw new AppError('Listing not found', 404)
   }
