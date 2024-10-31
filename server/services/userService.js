@@ -18,18 +18,17 @@ async function addUser (firstName, lastName, email, password) {
   }
 }
 
-async function getUser ({ id, email }) {
+async function getUser (id) {
   try {
     const user = await prisma.user.findUnique({
-      where: id ? { id } : { email }
+      where: {
+        id: id
+      }
     })
 
-    if (!user) {
-      throw new AppError('User not found', 404)
-    }
     return user
   } catch (error) {
-    throw new AppError('User not found', 404)
+    throw new AppError(error.message, 404)
   }
 }
 

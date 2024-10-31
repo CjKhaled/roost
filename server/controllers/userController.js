@@ -5,7 +5,7 @@ const AppError = require('../config/AppError')
 async function getSingleUser (req, res, next) {
   try {
     const { userID } = req.params
-    const user = await getUser({ Id: userID })
+    const user = await getUser(userID)
     res.status(200).json({ user })
   } catch (error) {
     next(error)
