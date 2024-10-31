@@ -9,6 +9,17 @@ const priceError = 'Price must be a non-negative number.'
 const locationError = 'Location must include valid latitude and longitude.'
 const dateError = 'Please provide valid dates in the format YYYY-MM-DD.'
 const imageUrlError = 'Image URLs should be an array of valid URLs.'
+// const amenityOptions = [
+//   'WIFI', 'PARKING', 'LAUNDRY', 'DISHWASHER', 'GYM', 
+//   'POOL', 'STUDY_ROOM', 'TRASH_PICKUP', 'CABLE_TV', 
+//   'ELECTRIC_VEHICLE_CHARGING'
+// ];
+// const utilityOptions = [
+//   'ELECTRICITY', 'WATER', 'GAS', 'SEWER', 'PEST_CONTROL'
+// ];
+// const amenityError = 'Amenities must be a valid array with only permitted values.';
+// const utilityError = 'Utilities must be a valid array with only permitted values.';
+// const booleanError = 'This field must be a boolean.';
 
 const validateListingCreate = [
   body('name')
@@ -51,7 +62,51 @@ const validateListingCreate = [
 
   body('imageUrl')
     .isArray()
-    .withMessage(imageUrlError)
+    .withMessage(imageUrlError),
+
+  // body('amenities')
+  //   .optional()
+  //   .isArray()
+  //   .withMessage(amenityError)
+  //   .custom((value) => value.every((item) => amenityOptions.includes(item)))
+  //   .withMessage(amenityError),
+
+  // body('utilities')
+  //   .optional()
+  //   .isArray()
+  //   .withMessage(utilityError)
+  //   .custom((value) => value.every((item) => utilityOptions.includes(item)))
+  //   .withMessage(utilityError),
+
+  // body('strictParking')
+  //   .optional()
+  //   .isBoolean()
+  //   .withMessage(booleanError)
+  //   .notEmpty(),
+
+  // body('strictNoisePolicy')
+  //   .optional()
+  //   .isBoolean()
+  //   .withMessage(booleanError)
+  //   .notEmpty(),
+
+  // body('guestsAllowed')
+  //   .optional()
+  //   .isBoolean()
+  //   .withMessage(booleanError)
+  //   .notEmpty(),
+
+  // body('petsAllowed')
+  //   .optional()
+  //   .isBoolean()
+  //   .withMessage(booleanError)
+  //   .notEmpty(),
+
+  // body('smokingAllowed')
+  //   .optional()
+  //   .isBoolean()
+  //   .withMessage(booleanError)
+  //   .notEmpty(),  
 ]
 
 const validateListingUpdate = [
@@ -95,7 +150,51 @@ const validateListingUpdate = [
 
   body('imageUrl')
     .isArray()
-    .withMessage(imageUrlError)
+    .withMessage(imageUrlError),
+
+  // body('amenities')
+  //   .optional()
+  //   .isArray()
+  //   .withMessage(amenityError)
+  //   .custom((value) => value.every((item) => amenityOptions.includes(item)))
+  //   .withMessage(amenityError),
+
+  // body('utilities')
+  //   .optional()
+  //   .isArray()
+  //   .withMessage(utilityError)
+  //   .custom((value) => value.every((item) => utilityOptions.includes(item)))
+  //   .withMessage(utilityError),
+
+  // body('strictParking')
+  //   .optional()
+  //   .isBoolean()
+  //   .withMessage(booleanError)
+  //   .notEmpty(),
+
+  // body('strictNoisePolicy')
+  //   .optional()
+  //   .isBoolean()
+  //   .withMessage(booleanError)
+  //   .notEmpty(),
+
+  // body('guestsAllowed')
+  //   .optional()
+  //   .isBoolean()
+  //   .withMessage(booleanError)
+  //   .notEmpty(),
+
+  // body('petsAllowed')
+  //   .optional()
+  //   .isBoolean()
+  //   .withMessage(booleanError)
+  //   .notEmpty(),
+
+  // body('smokingAllowed')
+  //   .optional()
+  //   .isBoolean()
+  //   .withMessage(booleanError)
+  //   .notEmpty(),  
 ]
 
 module.exports = {

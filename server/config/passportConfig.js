@@ -23,7 +23,7 @@ const options = {
 
 const strategy = new JwtStrategy(options, async (payload, done) => {
   try {
-    const user = userService.getUser(payload.sub)
+    const user = await userService.getUser(payload.sub)
     if (user) {
       return done(null, user)
     } else {

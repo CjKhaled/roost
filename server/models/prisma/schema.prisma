@@ -46,27 +46,28 @@ model User {
 }
 
 model Listing {
-  id        String      @id @default(uuid())
-  name      String
-  bedCount  Int
-  bathCount Int
-  address   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  locationLat  Float
-  locationLng Float
-  availableFrom String
-  availableTo String
-  imageUrl String[]
-  amenities Amenities[]
-  utilities Utilities[]
-  strictParking       Boolean
-  strictNoisePolicy   Boolean
-  guestsAllowed       Boolean
-  petsAllowed         Boolean
-  smokingAllowed      Boolean
+  id                String      @id @default(uuid())
+  name              String
+  bedCount          Int
+  bathCount         Int
+  address           String
+  createdAt         DateTime    @default(now())
+  price             Int
+  updatedAt         DateTime    @updatedAt
+  locationLat       Float
+  locationLng       Float
+  availableFrom     String
+  availableTo       String
+  imageUrl          String[]
+  amenities         Amenities[]
+  utilities         Utilities[]
+  strictParking     Boolean
+  strictNoisePolicy Boolean
+  guestsAllowed     Boolean
+  petsAllowed       Boolean
+  smokingAllowed    Boolean
 
   // relationships
-  createdBy User @relation("UserCreatedListings", fields: [createdById], references: [id])
+  createdBy   User   @relation("UserCreatedListings", fields: [createdById], references: [id])
   createdById String
 }
