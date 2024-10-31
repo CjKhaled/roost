@@ -13,27 +13,60 @@ datasource db {
   url      = env("DATABASE_URL_DEV")
 }
 
+enum Amenities {
+  WIFI
+  PARKING
+  LAUNDRY
+  DISHWASHER
+  GYM
+  POOL
+  STUDY_ROOM
+  TRASH_PICKUP
+  CABLE_TV
+  ELECTRIC_VEHICLE_CHARGING
+}
+
+enum Utilities {
+  ELECTRICITY
+  WATER
+  GAS
+  SEWER
+  PEST_CONTROL
+}
+
 model User {
-  Id        String @id @default(uuid())
-  FirstName String @db.VarChar(30)
-  LastName  String @db.VarChar(30)
-  Email     String @unique @db.VarChar(50)
-  Password  String
+  id        String @id @default(uuid())
+  firstName String @db.VarChar(30)
+  lastName  String @db.VarChar(30)
+  email     String @unique @db.VarChar(50)
+  password  String
 
   // relationships
   createdListings Listing[] @relation("UserCreatedListings") // a user can create many listings
 }
 
 model Listing {
-  Id        Int      @id @default(autoincrement())
+  id        String      @id @default(uuid())
   name      String
   bedCount  Int
   bathCount Int
   address   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  locationLat  Float
+  locationLng Float
+  availableFrom String
+  availableTo String
+  imageUrl String[]
+  amenities Amenities[]
+  utilities Utilities[]
+  strictParking       Boolean
+  strictNoisePolicy   Boolean
+  guestsAllowed       Boolean
+  petsAllowed         Boolean
+  smokingAllowed      Boolean
 
   // relationships
-  createdBy User @relation("UserCreatedListings", fields: [createdById], references: [Id])
+  createdBy User @relation("UserCreatedListings", fields: [createdById], references: [id])
   createdById String
 }

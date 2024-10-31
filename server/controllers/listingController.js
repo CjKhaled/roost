@@ -30,9 +30,36 @@ async function createANewListing (req, res, next) {
     if (!errors.isEmpty()) {
       throw new AppError(errors.array()[0].msg, 400)
     }
-    const { name, bedCount, bathCount, address } = req.body
-    const listing = await addListing(name, bedCount, bathCount, address, req.user.id)
-    res.status(201).json({ listing })
+    const {
+      name,
+      bedCount,
+      bathCount,
+      address,
+      location,
+      price,
+      available,
+      imageUrl,
+      amenities,
+      utilities,
+      policies
+    } = req.body;
+
+    const listing = await addListing(
+      name,
+      bedCount,
+      bathCount,
+      address,
+      req.user.id,
+      location,
+      price,
+      available,
+      imageUrl || [],
+      amenities || [],
+      utilities || [],
+      policies || {}
+    );
+    
+    res.status(200).json({ listing })
   } catch (error) {
     next(error)
   }
