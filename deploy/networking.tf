@@ -133,3 +133,11 @@ resource "aws_vpc_security_group_ingress_rule" "allow-https" {
   cidr_ipv4         = var.allow-all-cidr-block
   ip_protocol       = var.ip-protocol
 }
+
+resource "aws_vpc_security_group_egress_rule" "allow_all_outbound" {
+  security_group_id = aws_security_group.security-group.id
+  ip_protocol       = "-1"  # All protocols
+  from_port         = -1
+  to_port           = -1
+  cidr_ipv4         = "0.0.0.0/0"
+}
