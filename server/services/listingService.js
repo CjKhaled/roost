@@ -33,11 +33,11 @@ async function addListing (name, bedCount, bathCount, address, createdById, loca
   }
 }
 
-async function getListing (Id) {
+async function getListing (id) {
   try {
     const listing = await prisma.listing.findUnique({
       where: {
-        Id
+        id
       }
     })
 
@@ -81,11 +81,11 @@ async function updateListing (id, data) {
   }
 }
 
-async function deleteListing (Id) {
+async function deleteListing (id) {
   try {
     const listing = await prisma.listing.delete({
       where: {
-        Id
+        id
       }
     })
 

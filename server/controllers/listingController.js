@@ -58,7 +58,7 @@ async function createANewListing (req, res, next) {
       utilities || [],
       policies || {}
     );
-    
+
     res.status(200).json({ listing })
   } catch (error) {
     next(error)
@@ -71,9 +71,36 @@ async function updateAnExistingListing (req, res, next) {
     if (!errors.isEmpty()) {
       throw new AppError(errors.array()[0], 400)
     }
-    const { listingID } = req.params
-    const { name, bedCount, bathCount, address } = req.body
-    const listing = await updateListing(listingID, name, bedCount, bathCount, address)
+    
+    const { listingID } = req.params;
+    const {
+      name,
+      bedCount,
+      bathCount,
+      address,
+      location,
+      price,
+      available,
+      imageUrl,
+      amenities,
+      utilities,
+      policies
+    } = req.body;
+
+    const listing = await updateListing(listingID, {
+      name,
+      bedCount,
+      bathCount,
+      address,
+      location,
+      price,
+      available,
+      imageUrl: imageUrl || [],
+      amenities: amenities || [],
+      utilities: utilities || [],
+      policies: policies || {}
+    });
+
     res.status(200).json({ listing })
   } catch (error) {
     next(error)

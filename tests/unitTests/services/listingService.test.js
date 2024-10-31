@@ -25,68 +25,190 @@ beforeEach(() => {
 })
 
 test('adding a new listing works', async () => {
-  const mockListing = { Id: 1, name: 'Luxury Apartment', bedCount: 2, bathCount: 1, address: '123 Main St', createdById: 'user-123' }
-  prisma.listing.create.mockResolvedValue(mockListing)
+  const mockListing = {
+    id: 1,
+    name: 'Luxury Apartment',
+    bedCount: 2,
+    bathCount: 1,
+    address: '123 Main St',
+    createdById: 'user-123',
+    locationLat: 34.05,
+    locationLng: -118.25,
+    price: 1500,
+    availableFrom: '2023-01-01',
+    availableTo: '2023-12-31',
+    imageUrl: ['https://example.com/image.jpg'],
+    amenities: ['WiFi', 'Parking'],
+    utilities: ['Electricity', 'Water'],
+    strictParking: true,
+    strictNoisePolicy: false,
+    guestsAllowed: true,
+    petsAllowed: false,
+    smokingAllowed: false
+  };
+  prisma.listing.create.mockResolvedValue(mockListing);
 
-  const newListing = await addListing('Luxury Apartment', 2, 1, '123 Main St', 'user-123')
+  const newListing = await addListing(
+    'Luxury Apartment',
+    2,
+    1,
+    '123 Main St',
+    'user-123',
+    { lat: 34.05, lng: -118.25 },
+    1500,
+    { from: '2023-01-01', to: '2023-12-31' },
+    ['https://example.com/image.jpg'],
+    ['WiFi', 'Parking'],
+    ['Electricity', 'Water'],
+    {
+      strictParking: true,
+      strictNoisePolicy: false,
+      guestsAllowed: true,
+      petsAllowed: false,
+      smokingAllowed: false
+    }
+  );
+
   expect(prisma.listing.create).toHaveBeenCalledWith({
     data: {
       name: 'Luxury Apartment',
       bedCount: 2,
       bathCount: 1,
       address: '123 Main St',
+      locationLat: 34.05,
+      locationLng: -118.25,
+      price: 1500,
+      availableFrom: '2023-01-01',
+      availableTo: '2023-12-31',
+      imageUrl: ['https://example.com/image.jpg'],
+      amenities: ['WiFi', 'Parking'],
+      utilities: ['Electricity', 'Water'],
+      strictParking: true,
+      strictNoisePolicy: false,
+      guestsAllowed: true,
+      petsAllowed: false,
+      smokingAllowed: false,
       createdBy: {
-        connect: { Id: 'user-123' }
+        connect: { id: 'user-123' }
       }
     }
-  })
-  expect(newListing).toEqual(mockListing)
-})
+  });
+  expect(newListing).toEqual(mockListing);
+});
 
 test('adding a listing with a duplicate name gives a 409 error', async () => {
-  const prismaError = new PrismaClientKnownRequestError('Unique constraint failed on the fields: (`name`)', 'P2002', '1.0.0')
-  prisma.listing.create.mockRejectedValue(prismaError)
+  const prismaError = new PrismaClientKnownRequestError('Unique constraint failed on the fields: (`name`)', 'P2002', '1.0.0');
+  prisma.listing.create.mockRejectedValue(prismaError);
 
-  await expect(addListing('Luxury Apartment', 2, 1, '123 Main St')).rejects.toThrow('A listing with that name already exists.')
-})
+  await expect(
+    addListing(
+      'Luxury Apartment',
+      2,
+      1,
+      '123 Main St',
+      'user-123',
+      { lat: 34.05, lng: -118.25 },
+      1500,
+      { from: '2023-01-01', to: '2023-12-31' },
+      ['https://example.com/image.jpg']
+    )
+  ).rejects.toThrow('A listing with that name already exists.');
+});
 
 test('getting a listing that exists works', async () => {
-  const mockListing = { Id: 1, name: 'Luxury Apartment', bedCount: 2, bathCount: 1, address: '123 Main St' }
-  prisma.listing.findUnique.mockResolvedValue(mockListing)
+  const mockListing = {
+    id: 1,
+    name: 'Luxury Apartment',
+    bedCount: 2,
+    bathCount: 1,
+    address: '123 Main St'
+  };
+  prisma.listing.findUnique.mockResolvedValue(mockListing);
 
-  const fetchedListing = await getListing(1)
+  const fetchedListing = await getListing(1);
   expect(prisma.listing.findUnique).toHaveBeenCalledWith({
     where: {
-      Id: 1
+      id: 1
     }
-  })
-  expect(fetchedListing).toEqual(mockListing)
-})
+  });
+  expect(fetchedListing).toEqual(mockListing);
+});
 
 test("getting a listing that doesn't exist gives 404 error", async () => {
-  prisma.listing.findUnique.mockResolvedValue(null)
+  prisma.listing.findUnique.mockResolvedValue(null);
 
-  await expect(getListing(999)).rejects.toThrow('Listing not found')
-})
+  await expect(getListing(999)).rejects.toThrow('Listing not found');
+});
 
 test('updating a listing that exists works', async () => {
-  const mockUpdatedListing = { Id: 1, name: 'Updated Apartment', bedCount: 2, bathCount: 1, address: '123 Main St' }
-  prisma.listing.update.mockResolvedValue(mockUpdatedListing)
+  const mockUpdatedListing = {
+    id: 1,
+    name: 'Updated Apartment',
+    bedCount: 2,
+    bathCount: 1,
+    address: '123 Main St',
+    locationLat: 34.05,
+    locationLng: -118.25,
+    price: 1600,
+    availableFrom: '2023-02-01',
+    availableTo: '2023-12-15',
+    imageUrl: ['https://example.com/image2.jpg'],
+    amenities: ['WiFi', 'Gym'],
+    utilities: ['Electricity'],
+    strictParking: false,
+    strictNoisePolicy: true,
+    guestsAllowed: true,
+    petsAllowed: true,
+    smokingAllowed: false
+  };
+  prisma.listing.update.mockResolvedValue(mockUpdatedListing);
 
-  const updatedListing = await updateListing(1, 'Updated Apartment', 2, 1, '123 Main St')
+  const updatedListing = await updateListing(1, {
+    name: 'Updated Apartment',
+    bedCount: 2,
+    bathCount: 1,
+    address: '123 Main St',
+    location: { lat: 34.05, lng: -118.25 },
+    price: 1600,
+    available: { from: '2023-02-01', to: '2023-12-15' },
+    imageUrl: ['https://example.com/image2.jpg'],
+    amenities: ['WiFi', 'Gym'],
+    utilities: ['Electricity'],
+    policies: {
+      strictParking: false,
+      strictNoisePolicy: true,
+      guestsAllowed: true,
+      petsAllowed: true,
+      smokingAllowed: false
+    }
+  });
+
   expect(prisma.listing.update).toHaveBeenCalledWith({
     where: {
-      Id: 1
+      id: 1
     },
     data: {
       name: 'Updated Apartment',
       bedCount: 2,
       bathCount: 1,
-      address: '123 Main St'
+      address: '123 Main St',
+      locationLat: 34.05,
+      locationLng: -118.25,
+      price: 1600,
+      availableFrom: '2023-02-01',
+      availableTo: '2023-12-15',
+      imageUrl: ['https://example.com/image2.jpg'],
+      amenities: ['WiFi', 'Gym'],
+      utilities: ['Electricity'],
+      strictParking: false,
+      strictNoisePolicy: true,
+      guestsAllowed: true,
+      petsAllowed: true,
+      smokingAllowed: false
     }
-  })
-  expect(updatedListing).toEqual(mockUpdatedListing)
-})
+  });
+  expect(updatedListing).toEqual(mockUpdatedListing);
+});
 
 test("updating a listing that doesn't exist gives 404 error", async () => {
   const prismaError = new PrismaClientKnownRequestError('Listing not found', 'P2025', '1.0.0')
@@ -96,13 +218,13 @@ test("updating a listing that doesn't exist gives 404 error", async () => {
 })
 
 test('deleting a listing that exists works', async () => {
-  const mockDeletedListing = { Id: 1, name: 'Luxury Apartment', bedCount: 2, bathCount: 1, address: '123 Main St' }
+  const mockDeletedListing = { id: 1, name: 'Luxury Apartment', bedCount: 2, bathCount: 1, address: '123 Main St' }
   prisma.listing.delete.mockResolvedValue(mockDeletedListing)
 
   const deletedListing = await deleteListing(1)
   expect(prisma.listing.delete).toHaveBeenCalledWith({
     where: {
-      Id: 1
+      id: 1
     }
   })
   expect(deletedListing).toEqual(mockDeletedListing)
@@ -117,8 +239,8 @@ test("deleting a listing that doesn't exist gives 404 error", async () => {
 
 test('getting all listings works', async () => {
   const mockListings = [
-    { Id: 1, name: 'Luxury Apartment', bedCount: 2, bathCount: 1, address: '123 Main St' },
-    { Id: 2, name: 'Cozy Cottage', bedCount: 3, bathCount: 2, address: '456 Elm St' }
+    { id: 1, name: 'Luxury Apartment', bedCount: 2, bathCount: 1, address: '123 Main St' },
+    { id: 2, name: 'Cozy Cottage', bedCount: 3, bathCount: 2, address: '456 Elm St' }
   ]
   prisma.listing.findMany.mockResolvedValue(mockListings)
 
