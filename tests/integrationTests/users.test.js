@@ -67,15 +67,15 @@ test('requesting GET /:userID with an invalid userID results in 404 error', asyn
 
 test('requesting GET / results in 200 OK', async () => {
   const mockUsers = [
-    { id: 1, firstName: 'John', lastName: 'Doe', email: 'john.doe@example.com' },
-    { id: 2, firstName: 'Jane', lastName: 'Doe', email: 'jane.doe@example.com' }
+    { id: 1, firstName: 'John', lastName: 'Doe', email: 'john.doe@example.com', createdListings: [] },
+    { id: 2, firstName: 'Jane', lastName: 'Doe', email: 'jane.doe@example.com', createdListings: [] }
   ]
   prisma.user.findMany.mockResolvedValue(mockUsers)
 
   const res = await request(app).get('/api/users')
 
   expect(res.statusCode).toBe(200)
-  expect(res.body.user).toEqual(mockUsers)
+  expect(res.body.users).toEqual(mockUsers)
 })
 
 test('requesting PUT /update/:userID with a valid userID results in 200 OK', async () => {

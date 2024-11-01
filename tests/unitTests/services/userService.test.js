@@ -48,13 +48,20 @@ test('adding a user with a duplicate email gives a 409 error', async () => {
 })
 
 test('getting a user that exists works', async () => {
-  const mockUser = { id: 1, firstName: 'Jane', lastName: 'Doe', email: 'jane.doe@example.com', password: 'password123' }
+  const mockUser = { id: 1, firstName: 'Jane', lastName: 'Doe', email: 'jane.doe@example.com', password: 'password123', createdListings: [] }
   prisma.user.findUnique.mockResolvedValue(mockUser)
 
   const fetchedUser = await getUser(1)
   expect(prisma.user.findUnique).toHaveBeenCalledWith({
     where: {
       id: 1
+    },
+    include: {
+      createdListings: {
+        select: {
+          id: true
+        }
+      }
     }
   })
   expect(fetchedUser).toEqual(mockUser)
