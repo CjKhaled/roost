@@ -9,7 +9,7 @@ const priceError = 'Price must be a non-negative number.'
 const locationError = 'Location must include valid latitude and longitude.'
 const dateError = 'Please provide valid dates in the format YYYY-MM-DD.'
 const imageUrlError = 'Image URLs should be an array of valid URLs.'
-const descriptionError = 'Description must be between 10-500 characters.'
+// const descriptionError = 'Description must be between 10-500 characters.'
 // const amenityOptions = [
 //   'WIFI', 'PARKING', 'LAUNDRY', 'DISHWASHER', 'GYM',
 //   'POOL', 'STUDY_ROOM', 'TRASH_PICKUP', 'CABLE_TV',
