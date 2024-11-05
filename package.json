@@ -21,6 +21,7 @@
   "scripts": {
     "test": "jest",
     "lint": "npx standard",
+    "genkeys": "node server/config/genKeyPair.js",
     "start": "node server/server.js && server/config/genKeyPair.js"
   },
   "prisma": {

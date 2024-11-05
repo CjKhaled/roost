@@ -27,6 +27,7 @@ Create a new branch based on the type of work you're doing:
 ### 3. Database Setup
 
 - Install PostgreSQL 14.13 if you haven't already.
+- Can use [pgAdmin](https://www.pgadmin.org/download/) as a GUI.
 - Create a new database:  
   CREATE DATABASE roost;
 
@@ -41,11 +42,15 @@ Create a new branch based on the type of work you're doing:
 Install project dependencies:  
 npm install
 
-### 6. Starting the Server
+### 6. Generat keys
+Generate a public and private key for JWT authentication:
+npm genkeys
+
+### 7. Starting the Server
 Run the development server:  
 npm start
 
-### 7. API Testing
+### 8. API Testing
 Use Postman to interact with the API endpoints. Refer to the routes directory to see what you can do so far.
 
 ## Development Workflow
