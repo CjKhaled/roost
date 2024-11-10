@@ -40,6 +40,8 @@ model User {
   lastName  String @db.VarChar(30)
   email     String @unique @db.VarChar(50)
   password  String
+  eduVerified Boolean @default(false) // New field for .edu email verification status
+  verificationToken String? @db.VarChar(255)
 
   // relationships
   createdListings Listing[] @relation("UserCreatedListings") // a user can create many listings
