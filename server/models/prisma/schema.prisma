@@ -42,6 +42,7 @@ model User {
   password  String
   eduVerified Boolean @default(false) // New field for .edu email verification status
   verificationToken String? @db.VarChar(255)
+  tokenExpiry      DateTime?
 
   // relationships
   createdListings Listing[] @relation("UserCreatedListings") // a user can create many listings
