@@ -2,10 +2,18 @@ const socketIO = require('socket.io');
 
 class SocketService {
   constructor() {
-    this.io - null;
+    this.io = null;
+
   }
   initialize(server) {
-    this.io = socketIO(server);
+    // this.io = socketIO(server);
+    this.io = new socketIO.Server(server, {
+      cors: {
+        origin: '*', // Accept all URLs
+        methods: ['GET', 'POST'],
+        credentials: true,
+      },
+    });
     this.io.on('connection', (socket) => {
       console.log(`User connected: ${socket.id}`);
 
@@ -23,6 +31,7 @@ class SocketService {
 
       socket.on('sendMessage', (data) => {
         // Save message to database
+        console.log("Message sent: ", data);
         socket.to(data.senderId).emit('recieveMessage', data);
       })
 
