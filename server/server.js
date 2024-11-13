@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const passport = require('passport')
 const errorHandler = require('./middleware/errorHandler')
+const verifyEduRouter = require('./routes/emailVerificationRoutes');
 
 const corsOptions = {
   origin: 'http://localhost:5173',
@@ -26,6 +27,7 @@ const listingRouter = require('./routes/listingRoutes')
 app.use('/api', authRouter)
 app.use('/api/users', userRouter)
 app.use('/api/listings', listingRouter)
+app.use('/', verifyEduRouter)
 app.use(errorHandler)
 
 const port = process.env.PORT || 3000

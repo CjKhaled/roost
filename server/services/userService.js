@@ -14,7 +14,7 @@ async function addUser (firstName, lastName, email, password) {
 
     return user
   } catch (error) {
-    throw new AppError('A user with that email already exists.', 409)
+    throw new AppError(error, 409)
   }
 }
 
