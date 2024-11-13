@@ -5,7 +5,7 @@ const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const passport = require('passport')
 const errorHandler = require('./middleware/errorHandler')
-const verifyEduRouter = require('./routes/emailVerificationRoutes');
+const verifyEduRouter = require('./routes/emailVerificationRoutes')
 
 const corsOptions = {
   origin: 'http://localhost:5173',
