@@ -25,9 +25,17 @@ class SocketService {
     this.io.on('connection', (socket) => {
       console.log(`User connected: ${socket.id}`);
 
-      socket.on('userOnline', (userId) => {
-        console.log(`User online: ${userId}`)
-        socket.join(userId)
+      socket.on('userOnline', async (data) => {
+        const { userId, recipientId } = data;
+        console.log(`User online: ${userId}`);
+        socket.join(userId);
+        try {
+          const conversation = await getOrCreateConversation(userId, recipientId);
+          socket.emit('conversationId', conversation.id);
+        } catch (error) {
+          console.error('Error getting or creating conversation:', error.message);
+          socket.emit('error', { message: 'Could not get or create conversation' });
+        }
       })
 
       socket.on('typing', (data) => {
