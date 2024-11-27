@@ -3,6 +3,19 @@ const AppError = require('../config/AppError')
 
 async function updateUserVerification (email, verificationToken, tokenExpiry) {
   try {
+  // Check if a user with the given email already exists
+    const existingUser = await prisma.user.findUnique({
+      where: { email }
+    })
+
+    if (!existingUser) {
+      throw new AppError('User with this email does not exist.', 404)
+    }
+
+    if (existingUser.verificationToken) {
+      throw new AppError('A user with that email already exists.', 409)
+    }
+
     const user = await prisma.user.update({
       where: { email },
       data: {
@@ -13,11 +26,10 @@ async function updateUserVerification (email, verificationToken, tokenExpiry) {
 
     return user
   } catch (error) {
-    if (error.code === 'P2002' && error.meta.target.includes('email')) {
+    if (error.code === 'P2002' /* && error.meta.target.includes('email') */) {
       throw new AppError('A user with this email already exists.', 409)
     }
-
-    throw new AppError('Error updating user verification', 500)
+    throw new AppError(error.message || 'Error updating user verification', 500)
   }
 }
 
