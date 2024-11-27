@@ -5,7 +5,7 @@ const validator = require('../validations/userValidations')
 const authenticateJWT = require('../middleware/authenticateJWT')
 
 router.get('/', authenticateJWT, controller.getAllUsers)
-router.get('/:userID', authenticateJWT, controller.getSingleUser)
+router.get('/:userID', controller.getSingleUser)
 router.put('/update/:userID', validator.validateUserUpdate, authenticateJWT, controller.updateAnExistingUser)
 router.delete('/:userID', authenticateJWT, controller.deleteAnExistingUser)
 
