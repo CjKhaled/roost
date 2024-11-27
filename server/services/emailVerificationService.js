@@ -13,6 +13,10 @@ async function updateUserVerification (email, verificationToken, tokenExpiry) {
 
     return user
   } catch (error) {
+    if (error.code === 'P2002' && error.meta.target.includes('email')) {
+      throw new AppError('A user with this email already exists.', 409)
+    }
+
     throw new AppError('Error updating user verification', 500)
   }
 }
