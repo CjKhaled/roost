@@ -1,3 +1,14 @@
+// this can not be destroyed. 
+
+/**
+Run this to ensure you can destroy resources without this being destroyed
+
+terraform state rm aws_s3_bucket.terraform_roost_state
+terraform state rm aws_s3_bucket_versioning.terraform_roost_state
+terraform state rm aws_s3_bucket_server_side_encryption_configuration.terraform_roost_state
+terraform state rm aws_dynamodb_table.terraform_roost_locks
+**/
+
 resource "aws_s3_bucket" "terraform_roost_state" {
   bucket        = var.s3-bucket-name
   force_destroy = true
