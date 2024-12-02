@@ -1,5 +1,6 @@
 // anything involving prisma should go in the service file (emailVerificationService)
 // any logic should go in the controller file (emailVerificationController)
+/* eslint-disable no-undef */
 
 const express = require('express')
 const router = express.Router()

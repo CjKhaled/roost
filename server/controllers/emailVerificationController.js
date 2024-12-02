@@ -40,7 +40,7 @@ async function sendVerificationEmail (req, res, next) {
     res.status(200).json({ message: 'Verification email sent.' })
   } catch (error) {
     if (error.statusCode === 409) {
-      return res.status(409).json({ message: 'A user with this email already exists.' });
+      return res.status(409).json({ message: 'A user with this email already exists.' })
     }
     next(error)
   }
