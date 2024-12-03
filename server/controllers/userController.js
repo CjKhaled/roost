@@ -16,7 +16,8 @@ async function getAllUsers (req, res, next) {
   try {
     const usersWithPass = await getUsers()
     const users = usersWithPass.map(({ password, ...user }) => user)
-    res.status(200).json({ users })
+    const user = req.user
+    res.status(200).json({ users, user })
   } catch (error) {
     next(error)
   }
