@@ -61,7 +61,7 @@ async function getUserByEmail (email) {
   }
 }
 
-async function updateUser (id, firstName, lastName) {
+async function updateUser (id, firstName, lastName, email) {
   try {
     const user = await prisma.user.update({
       where: {
@@ -69,7 +69,8 @@ async function updateUser (id, firstName, lastName) {
       },
       data: {
         firstName,
-        lastName
+        lastName,
+        email
       }
     })
 

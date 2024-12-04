@@ -30,8 +30,8 @@ async function updateAnExistingUser (req, res, next) {
       throw new AppError(errors.array()[0], 400)
     }
     const { userID } = req.params
-    const { FirstName, LastName } = req.body
-    const { password, ...user } = await updateUser(userID, FirstName, LastName)
+    const { firstName, lastName, email } = req.body
+    const { password, ...user } = await updateUser(userID, firstName, lastName, email)
     res.status(200).json({ user })
   } catch (error) {
     next(error)
