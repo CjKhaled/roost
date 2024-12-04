@@ -43,6 +43,7 @@ model User {
 
   // relationships
   createdListings Listing[] @relation("UserCreatedListings")
+  favorites       Listing[] @relation("UserFavorites")
 }
 
 model Listing {
@@ -74,6 +75,7 @@ model Listing {
   // relationships
   createdBy   User   @relation("UserCreatedListings", fields: [createdById], references: [id])
   createdById String
+  favoritedBy User[] @relation("UserFavorites")
 }
 
 model Conversation {
