@@ -42,7 +42,8 @@ model User {
   password  String
 
   // relationships
-  createdListings Listing[]      @relation("UserCreatedListings")
+  createdListings Listing[] @relation("UserCreatedListings")
+  favorites       Listing[] @relation("UserFavorites")
 }
 
 model Listing {
@@ -62,6 +63,9 @@ model Listing {
   imageUrl          String[]
   amenities         Amenities[]
   utilities         Utilities[]
+  city              String      @default("Gainesville, FL")
+  cityLat           Float       @default(29.6519563)
+  cityLng           Float       @default(-82.324998)
   strictParking     Boolean
   strictNoisePolicy Boolean
   guestsAllowed     Boolean
@@ -71,15 +75,16 @@ model Listing {
   // relationships
   createdBy   User   @relation("UserCreatedListings", fields: [createdById], references: [id])
   createdById String
+  favoritedBy User[] @relation("UserFavorites")
 }
 
 model Conversation {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id        String    @id @default(uuid())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   userOneId String
   userTwoId String
-  messages Message[]
+  messages  Message[]
 
   // only two users per conversation
   @@unique([userOneId, userTwoId])
@@ -88,14 +93,14 @@ model Conversation {
 }
 
 model Message {
-  id        String   @id @default(uuid())
-  content   String
-  createdAt DateTime @default(now())
-  read      Boolean  @default(false)
-  conversation Conversation @relation(fields: [conversationId], references: [id])
+  id             String       @id @default(uuid())
+  content        String
+  createdAt      DateTime     @default(now())
+  read           Boolean      @default(false)
+  conversation   Conversation @relation(fields: [conversationId], references: [id])
   conversationId String
-  senderId String
-  receiverId String
+  senderId       String
+  receiverId     String
 
   // more efficient query
   @@index([conversationId])

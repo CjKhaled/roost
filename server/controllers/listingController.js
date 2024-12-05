@@ -18,9 +18,7 @@ async function getSingleListing (req, res, next) {
 async function getAllListingsController (req, res, next) {
   try {
     const listings = await getListings()
-    // do not include password for security purposes
-    const { password, ...user } = req.user
-    res.status(200).json({ listings, user })
+    res.status(200).json({ listings })
   } catch (error) {
     next(error)
   }
