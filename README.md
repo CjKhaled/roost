@@ -41,11 +41,18 @@ Create a new branch based on the type of work you're doing:
 Install project dependencies:  
 npm install
 
-### 6. Starting the Server
+### 6. Database Migrations
+Run the migrations to create the tables in the database:
+```bash
+npx prisma migrate dev
+npx prisma generate
+```
+
+### 7. Starting the Server
 Run the development server:  
 npm start
 
-### 7. API Testing
+### 8. API Testing
 Use Postman to interact with the API endpoints. Refer to the routes directory to see what you can do so far.
 
 ## Development Workflow
