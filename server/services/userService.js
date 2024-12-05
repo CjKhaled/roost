@@ -105,11 +105,55 @@ async function getUsers () {
   }
 }
 
+async function getUserFavorites(userId) {
+  try {
+    const favorites = await prisma.user.findUnique({
+      where: { id: userId },
+      include: { favorites: true }
+    })
+  
+    return favorites
+  } catch (error) {
+    throw new AppError(error)
+  }
+}
+
+async function toggleFavorite(userId, listingId) {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    include: { favorites: true }
+  })
+
+  const isFavorited = user.favorites.some(f => f.id === listingId)
+
+  if (isFavorited) {
+    return await prisma.user.update({
+      where: { id: userId },
+      data: {
+        favorites: {
+          disconnect: { id: listingId }
+        }
+      }
+    })
+  } else {
+    return await prisma.user.update({
+      where: { id: userId },
+      data: {
+        favorites: {
+          connect: { id: listingId }
+        }
+      }
+    })
+  }
+}
+
 module.exports = {
   addUser,
   getUser,
   updateUser,
   deleteUser,
   getUsers,
-  getUserByEmail
+  getUserByEmail,
+  getUserFavorites,
+  toggleFavorite
 }

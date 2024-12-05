@@ -38,9 +38,9 @@ async function getListing (id) {
   try {
     const listing = await prisma.listing.findUnique({
       where: {
-        id
+        id,
       }
-    })
+    });
 
     if (!listing) {
       throw new AppError('Listing not found', 404)

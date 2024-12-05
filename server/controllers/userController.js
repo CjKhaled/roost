@@ -1,4 +1,4 @@
-const { getUser, updateUser, deleteUser, getUsers } = require('../services/userService')
+const { getUser, updateUser, deleteUser, getUsers, getUserFavorites, toggleFavorite } = require('../services/userService')
 const { validationResult } = require('express-validator')
 const AppError = require('../config/AppError')
 
@@ -16,7 +16,8 @@ async function getAllUsers (req, res, next) {
   try {
     const usersWithPass = await getUsers()
     const users = usersWithPass.map(({ password, ...user }) => user)
-    res.status(200).json({ users })
+    const user = req.user
+    res.status(200).json({ users, user })
   } catch (error) {
     next(error)
   }
@@ -47,9 +48,32 @@ async function deleteAnExistingUser (req, res, next) {
   }
 }
 
+async function getFavorites(req, res, next) {
+  try {
+    const userId = req.user.id
+    const { favorites } = await getUserFavorites(userId)
+    res.status(200).json({ listings: favorites })
+  } catch (error) {
+    next(error)
+  }
+}
+
+async function toggleUserFavorite(req, res, next) {
+  try {
+    const userId = req.user.id
+    const { listingId } = req.params
+    await toggleFavorite(userId, listingId)
+    res.status(200).json({ message: 'Favorite toggled successfully' })
+  } catch (error) {
+    next(error)
+  }
+}
+
 module.exports = {
   getSingleUser,
   getAllUsers,
   updateAnExistingUser,
-  deleteAnExistingUser
+  deleteAnExistingUser,
+  getFavorites,
+  toggleUserFavorite
 }
