@@ -1,10 +1,16 @@
 require('dotenv').config()
 const express = require('express')
 const app = express()
+
+const http = require('http')
+const server = http.createServer(app)
+
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const passport = require('passport')
 const errorHandler = require('./middleware/errorHandler')
+const SocketService = require('./config/socket')
+
 
 const corsOptions = {
   origin: 'http://localhost:5173',
@@ -22,11 +28,15 @@ require('./config/passportConfig')(passport)
 const userRouter = require('./routes/userRoutes')
 const authRouter = require('./routes/authRoutes')
 const listingRouter = require('./routes/listingRoutes')
+const verifyEduRouter = require('./routes/emailVerificationRoutes')
 
 app.use('/api', authRouter)
 app.use('/api/users', userRouter)
 app.use('/api/listings', listingRouter)
+app.use('/api/email-verify', verifyEduRouter)
 app.use(errorHandler)
 
+SocketService.initialize(server);
+
 const port = process.env.PORT || 3000
-app.listen(port, () => console.log(`server listening on port ${port}`))
+server.listen(port, () => console.log(`server listening on port ${port}`))

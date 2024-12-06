@@ -2,11 +2,11 @@ const prisma = require('../models/prisma/prismaClient')
 const AppError = require('../config/AppError')
 
 // get all conversations f
-async function getAllConversations (userId) {
+async function getAllConversations (userID) {
   try {
     const conversations = await prisma.conversation.findMany({
       where: {
-        OR: [{ userOneId: userId }, { userTwoId: userId }]
+        OR: [{ userOneId: userID }, { userTwoId: userID }]
       },
       include: {
         messages: true
