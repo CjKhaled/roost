@@ -2,7 +2,7 @@ name: CI Pipeline
 
 on:  
   workflow_run:
-    workflows: ["Lint Code", "Test Code"]
+    workflows: ["Test Code"]
     types:
       - completed
     branches: 
