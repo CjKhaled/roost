@@ -53,6 +53,10 @@ jobs:
           echo "$EC2_PRIVATE_KEY" > new-standard-key.pem
           chmod 600 new-standard-key.pem
           ssh -o StrictHostKeyChecking=no -i new-standard-key.pem ec2-user@${{ secrets.EC2_PUBLIC_IP }} << EOF
+            aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws configure set region us-east-1
+          
             # Login to ECR
             aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 980921756008.dkr.ecr.us-east-1.amazonaws.com
             
