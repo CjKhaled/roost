@@ -12,7 +12,7 @@ const errorHandler = require('./middleware/errorHandler')
 const SocketService = require('./config/socket')
 
 const corsOptions = {
-  origin: 'http://localhost:5173',
+  origin: true,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
@@ -38,4 +38,4 @@ app.use(errorHandler)
 SocketService.initialize(server)
 
 const port = process.env.PORT || 3000
-server.listen(port, () => console.log(`server listening on port ${port}`))
+server.listen(port, "0.0.0.0", () => console.log(`server listening on port ${port}`))
