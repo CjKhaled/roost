@@ -12,8 +12,8 @@ const errorHandler = require('./middleware/errorHandler')
 const SocketService = require('./config/socket')
 
 const corsOptions = {
-  origin: true,
-  credentials: true,
+  origin: '*',
+  credentials: false,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }
