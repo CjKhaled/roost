@@ -59,6 +59,10 @@ jobs:
           
             # Login to ECR
             aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 980921756008.dkr.ecr.us-east-1.amazonaws.com
+
+            # Stop and remove any existing containers
+            docker ps -q | xargs -r docker stop
+            docker ps -aq | xargs -r docker rm
             
             # Pull and run the Docker image
             docker pull 980921756008.dkr.ecr.us-east-1.amazonaws.com/roost-ecr-repo:latest
