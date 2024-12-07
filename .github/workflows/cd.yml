@@ -58,5 +58,13 @@ jobs:
             
             # Pull and run the Docker image
             docker pull 980921756008.dkr.ecr.us-east-1.amazonaws.com/roost-ecr-repo:latest
-            docker run -d -p 3000:3000 980921756008.dkr.ecr.us-east-1.amazonaws.com/roost-ecr-repo:latest
+            docker run -d -p 3000:3000 \
+              -e DATABASE_URL_DEV="${{ secrets.DATABASE_URL_DEV }}" \
+              -e FIREBASE_API_KEY="${{ secrets.FIREBASE_API_KEY }}" \
+              -e FIREBASE_AUTH_DOMAIN="${{ secrets.FIREBASE_AUTH_DOMAIN }}" \
+              -e FIREBASE_PROJECT_ID="${{ secrets.FIREBASE_PROJECT_ID }}" \
+              -e FIREBASE_STORAGE_BUCKET="${{ secrets.FIREBASE_STORAGE_BUCKET }}" \
+              -e FIREBASE_MESSAGING_SENDER_ID="${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}" \
+              -e FIREBASE_APP_ID="${{ secrets.FIREBASE_APP_ID }}" \
+              980921756008.dkr.ecr.us-east-1.amazonaws.com/roost-ecr-repo:latest
           EOF
