@@ -106,20 +106,20 @@ async function getUsers () {
   }
 }
 
-async function getUserFavorites(userId) {
+async function getUserFavorites (userId) {
   try {
     const favorites = await prisma.user.findUnique({
       where: { id: userId },
       include: { favorites: true }
     })
-  
+
     return favorites
   } catch (error) {
     throw new AppError(error)
   }
 }
 
-async function toggleFavorite(userId, listingId) {
+async function toggleFavorite (userId, listingId) {
   const user = await prisma.user.findUnique({
     where: { id: userId },
     include: { favorites: true }

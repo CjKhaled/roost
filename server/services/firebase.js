@@ -1,12 +1,12 @@
-const multer = require("multer");
+const multer = require('multer')
 const {
   getStorage,
   ref,
   getDownloadURL,
-  uploadBytesResumable,
-} = require("firebase/storage");
-const { initializeApp } = require("firebase/app");
-require("dotenv").config();
+  uploadBytesResumable
+} = require('firebase/storage')
+const { initializeApp } = require('firebase/app')
+require('dotenv').config()
 
 const firebaseConfig = {
   apiKey: process.env.apiKey,
@@ -14,49 +14,49 @@ const firebaseConfig = {
   projectId: process.env.projectId,
   storageBucket: process.env.storageBucket,
   messagingSenderId: process.env.messagingSenderId,
-  appId: process.env.appId,
-};
+  appId: process.env.appId
+}
 
-initializeApp(firebaseConfig);
-const storage = getStorage();
-const upload = multer({ storage: multer.memoryStorage() });
+initializeApp(firebaseConfig)
+const storage = getStorage()
+const upload = multer({ storage: multer.memoryStorage() })
 
 // load into memory first
-const loadIntoMemory = upload.array("image", 10);
+const loadIntoMemory = upload.array('image', 10)
 
 const uploadToFirebase = async (req, res, next) => {
   try {
     const uploadPromises = req.files.map(async (file) => {
-        const dateTime = Date.now();
-        const storageRef = ref(
+      const dateTime = Date.now()
+      const storageRef = ref(
         storage,
-        `files/${file.originalname + "   " + dateTime}`
-        );
-        const metadata = {
-        contentType: file.mimetype,
-        };
+        `files/${file.originalname + '   ' + dateTime}`
+      )
+      const metadata = {
+        contentType: file.mimetype
+      }
 
-        // upload to bucket
-        const snapshot = await uploadBytesResumable(
+      // upload to bucket
+      const snapshot = await uploadBytesResumable(
         storageRef,
         file.buffer,
         metadata
-        );
+      )
 
-        return await getDownloadURL(snapshot.ref)
+      return await getDownloadURL(snapshot.ref)
     })
 
     // get url
-    const urls = await Promise.all(uploadPromises);
+    const urls = await Promise.all(uploadPromises)
 
     req.fileUpload = {
-        urls: urls
-    };
+      urls
+    }
 
-    next();
+    next()
   } catch (error) {
-    next(error);
+    next(error)
   }
-};
+}
 
-module.exports = { loadIntoMemory, uploadToFirebase };
+module.exports = { loadIntoMemory, uploadToFirebase }

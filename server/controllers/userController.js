@@ -48,7 +48,7 @@ async function deleteAnExistingUser (req, res, next) {
   }
 }
 
-async function getFavorites(req, res, next) {
+async function getFavorites (req, res, next) {
   try {
     const userId = req.user.id
     const { favorites } = await getUserFavorites(userId)
@@ -58,7 +58,7 @@ async function getFavorites(req, res, next) {
   }
 }
 
-async function toggleUserFavorite(req, res, next) {
+async function toggleUserFavorite (req, res, next) {
   try {
     const userId = req.user.id
     const { listingId } = req.params

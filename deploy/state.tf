@@ -11,7 +11,6 @@ terraform state rm aws_dynamodb_table.terraform_roost_locks
 
 resource "aws_s3_bucket" "terraform_roost_state" {
   bucket        = var.s3-bucket-name
-  force_destroy = true
 
   lifecycle {
     prevent_destroy = true

@@ -11,7 +11,6 @@ const passport = require('passport')
 const errorHandler = require('./middleware/errorHandler')
 const SocketService = require('./config/socket')
 
-
 const corsOptions = {
   origin: 'http://localhost:5173',
   credentials: true,
@@ -36,7 +35,7 @@ app.use('/api/listings', listingRouter)
 app.use('/api/email-verify', verifyEduRouter)
 app.use(errorHandler)
 
-SocketService.initialize(server);
+SocketService.initialize(server)
 
 const port = process.env.PORT || 3000
 server.listen(port, () => console.log(`server listening on port ${port}`))

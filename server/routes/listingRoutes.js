@@ -7,7 +7,7 @@ const { loadIntoMemory, uploadToFirebase } = require('../services/firebase')
 
 // images
 router.post('/upload', authenticateJWT, loadIntoMemory, uploadToFirebase, async (req, res) => {
-    res.json({ urls: req.fileUpload.urls })
+  res.json({ urls: req.fileUpload.urls })
 })
 
 router.get('/', controller.getAllListingsController)
